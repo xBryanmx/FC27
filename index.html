@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FC 27 SBC fodder calculator</title>
-<meta name="description" content="Find the cheapest fodder mix to finish FC 27 score-based SBCs, including the score you have already submitted.">
+<meta name="description" content="Pick an FC 27 score-based SBC and find the cheapest fodder to finish it.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,89 +12,104 @@
 <style>
 :root{
   --bg:#EEF1F5; --surface:#FFFFFF; --ink:#101828; --muted:#5B667A; --line:#D5DBE5;
-  --pitch:#1B6B47; --gain:#1B6B47; --loss:#B42318; --focus:#2457D6; --soft:#F6F8FB;
+  --pitch:#1B6B47; --gain:#1B6B47; --loss:#B42318; --focus:#2457D6; --soft:#F6F8FB; --sel:#E7F3EC;
   --gold1:#EBCB63; --gold2:#B8901F; --gold-ink:#33270A;
   --display:"Barlow Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;
   --body:"Barlow","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root{
-    --bg:#0E1420; --surface:#161E2D; --ink:#E8ECF3; --muted:#97A3B8; --line:#2A3447; --soft:#1B2538;
+    --bg:#0E1420; --surface:#161E2D; --ink:#E8ECF3; --muted:#97A3B8; --line:#2A3447; --soft:#1B2538; --sel:#17301F;
     --gain:#4CC38A; --loss:#F0776B; --focus:#7AA2FF; --pitch:#4CC38A;
   }
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5}
 a{color:var(--focus)}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
 .wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-header{padding:48px 0 28px;border-bottom:1px solid var(--line)}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(40px,7vw,68px);line-height:.98;margin:0 0 14px;letter-spacing:.2px}
-header p{margin:0;max-width:62ch;color:var(--muted);font-size:18px}
-.stamp{display:inline-block;margin-top:16px;padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:14px;color:var(--muted)}
+header{padding:36px 0 20px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(36px,6vw,56px);line-height:1;margin:0 0 10px}
+.stamp{display:inline-block;padding:5px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);font-size:14px;color:var(--muted)}
 .stamp.stale{border-color:var(--loss);color:var(--loss)}
-h2{font-family:var(--display);font-weight:700;font-size:32px;line-height:1.1;margin:0 0 14px}
-h3{font-family:var(--display);font-weight:600;font-size:22px;margin:0 0 8px}
-section{padding:40px 0;border-bottom:1px solid var(--line)}
-section:last-of-type{border-bottom:0}
-.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;align-items:start}
+h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.1;margin:0 0 12px}
+h3{font-family:var(--display);font-weight:600;font-size:20px;margin:0 0 6px}
+section{padding:18px 0 8px}
+/* SBC tiles */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.tile{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-height:132px}
+.tile:hover{border-color:var(--muted)}
+.tile[aria-pressed="true"]{border-color:var(--pitch);background:var(--sel)}
+.tile:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.tile .tn{font-family:var(--display);font-weight:700;font-size:22px;line-height:1.1}
+.tile .tr{font-size:14px;color:var(--muted);line-height:1.3}
+.tile .tf{display:flex;gap:16px;margin-top:auto;font-size:13px;color:var(--muted)}
+.tile .tf b{display:block;color:var(--ink);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.badge{align-self:flex-start;font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--gold1);color:var(--gold-ink)}
+.tile.custom{border-style:dashed}
+/* workspace */
+.head{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:baseline;margin-bottom:6px}
+.head h2{margin:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.chip{font-size:14px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.chip b{color:var(--ink);font-weight:600}
+.chip.limit{border-color:var(--gold2);color:var(--ink);background:rgba(235,203,99,.25)}
+.note{font-size:15px;color:var(--muted);max-width:80ch;margin:6px 0 14px}
+.grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);gap:20px;align-items:start}
 @media (max-width:900px){.grid{grid-template-columns:1fr}}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:22px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
 label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
-.field{margin-bottom:16px}
+.field{margin-bottom:14px}
 .hint{font-size:14px;color:var(--muted);margin:6px 0 0}
-input[type=number],input[type=text],select{
-  width:100%;font:inherit;color:var(--ink);background:var(--soft);border:1px solid var(--line);
-  border-radius:6px;padding:9px 11px;min-height:44px}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input[type=number],input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:9px 11px;min-height:44px}
 .check{display:flex;gap:10px;align-items:center;font-weight:500;margin:4px 0 0}
 .check input{width:20px;height:20px;margin:0}
-.tablewrap{overflow-x:auto;margin:6px 0 10px}
+.cost{font-family:var(--display);font-weight:700;font-size:clamp(46px,8vw,68px);line-height:1;margin:2px 0 4px;font-variant-numeric:tabular-nums}
+.cost small{font-size:.38em;font-weight:600;color:var(--muted);margin-left:6px}
+.stats{display:flex;flex-wrap:wrap;gap:4px 20px;color:var(--muted);font-size:15px;margin-bottom:16px}
+.stats b{color:var(--ink)}
+.prog{margin:0 0 16px}
+.prog progress{width:100%;height:12px;accent-color:var(--pitch)}
+.prog p{margin:4px 0 0;font-size:15px;color:var(--muted)}
+.hand{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 16px}
+.card{position:relative;width:62px;height:80px;border-radius:7px 7px 18px 18px;background:linear-gradient(160deg,var(--gold1),var(--gold2));color:var(--gold-ink);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:34px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45),0 1px 0 rgba(0,0,0,.25)}
+.card.long{font-size:22px}
+.card .qty{position:absolute;right:-8px;top:-8px;background:var(--ink);color:var(--surface);font-family:var(--body);font-size:14px;font-weight:600;border-radius:999px;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.verdict{border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--soft);margin-top:12px}
+.verdict strong{font-size:19px}
+.verdict.gain strong{color:var(--gain)} .verdict.loss strong{color:var(--loss)}
+.warn{color:var(--loss);font-weight:500;margin:8px 0}
 table{width:100%;border-collapse:collapse;font-size:15px}
-th{font-weight:600;text-align:left;color:var(--muted);padding:6px 8px 6px 0;white-space:nowrap}
-td{padding:5px 8px 5px 0;vertical-align:middle}
-td input{min-width:84px;padding:7px 9px;min-height:40px}
+th{font-weight:600;text-align:left;color:var(--muted);padding:6px 10px 6px 0;white-space:nowrap}
+td{padding:5px 10px 5px 0;vertical-align:middle}
+.mix td,.mix th{padding:4px 12px 4px 0}
+td input{min-width:80px;padding:7px 9px;min-height:40px}
 td.cp{white-space:nowrap;font-variant-numeric:tabular-nums}
 td.cp.best{color:var(--gain);font-weight:700}
+tr.off td{opacity:.5}
+tr.off td.cp{opacity:1;color:var(--loss);font-weight:500}
+.tablewrap{overflow-x:auto;margin:6px 0 10px}
 .rm{background:none;border:0;color:var(--muted);font-size:20px;cursor:pointer;padding:4px 8px;min-height:40px}
 .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 button.sec{font:inherit;font-weight:600;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 14px;min-height:44px;cursor:pointer}
 button.sec:hover{border-color:var(--muted)}
-.note{font-size:15px;color:var(--muted);background:var(--soft);border-left:4px solid var(--pitch);padding:10px 14px;border-radius:0 6px 6px 0;margin:0 0 16px}
-.cost{font-family:var(--display);font-weight:700;font-size:clamp(48px,9vw,76px);line-height:1;margin:2px 0 4px;font-variant-numeric:tabular-nums}
-.cost small{font-size:.38em;font-weight:600;color:var(--muted);margin-left:6px}
-.stats{display:flex;flex-wrap:wrap;gap:6px 22px;color:var(--muted);font-size:15px;margin-bottom:18px}
-.stats b{color:var(--ink)}
-.prog{margin:0 0 18px}
-.prog progress{width:100%;height:12px;accent-color:var(--pitch)}
-.prog p{margin:4px 0 0;font-size:15px;color:var(--muted)}
-.hand{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 18px;min-height:84px}
-.card{position:relative;width:62px;height:80px;border-radius:7px 7px 18px 18px;
-  background:linear-gradient(160deg,var(--gold1),var(--gold2));color:var(--gold-ink);
-  display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:34px;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.45), 0 1px 0 rgba(0,0,0,.25)}
-.card.long{font-size:22px}
-.card .qty{position:absolute;right:-8px;top:-8px;background:var(--ink);color:var(--surface);font-family:var(--body);font-size:14px;font-weight:600;
-  border-radius:999px;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;padding:0 6px}
-.verdict{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:var(--soft)}
-.verdict strong{font-size:19px}
-.verdict.gain strong{color:var(--gain)} .verdict.loss strong{color:var(--loss)}
-.warn{color:var(--loss);font-weight:500;margin:8px 0}
-.mix td,.mix th{padding:4px 12px 4px 0}
-.odds{margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
-.odds td input{min-width:70px;width:84px}
+/* accordions */
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:12px}
+summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--muted);font-size:20px;line-height:1}
+details[open] summary::after{content:"–"}
+summary span{color:var(--muted);font-weight:400;font-size:15px;margin-left:auto;margin-right:10px}
+.dbody{padding:0 18px 18px}
+.odds td input{width:84px}
 .odds td,.odds th{padding-right:12px}
 .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 @media (max-width:900px){.cols{grid-template-columns:1fr}}
 ul.names{list-style:none;margin:0;padding:0}
-ul.names li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+ul.names li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
 ul.names li span:last-child{color:var(--muted)}
-ol.steps{padding-left:22px;max-width:70ch}
-ol.steps li{margin-bottom:10px}
-.safety{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--loss);border-radius:8px;padding:16px 20px;max-width:75ch}
-.src li{margin-bottom:6px}
-footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
+.src{padding-left:20px;margin:6px 0}
+footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
 .sr{position:absolute;left:-9999px}
 </style>
 </head>
@@ -102,7 +117,6 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
 <header>
   <div class="wrap">
     <h1>FC 27 SBC fodder calculator</h1>
-    <p>Pick a score-based SBC, enter the score you have already submitted, and this finds the cheapest mix of cards to finish the rest. Then it checks whether the reward is worth the coins.</p>
     <span class="stamp" id="stamp">Loading prices…</span>
   </div>
 </header>
@@ -110,160 +124,190 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
 <main class="wrap">
 <noscript><p class="warn">This calculator needs JavaScript.</p></noscript>
 
-<section id="calculator" aria-labelledby="calc-h">
-  <h2 id="calc-h">Cheapest way to finish an SBC</h2>
+<section aria-labelledby="pick-h">
+  <h2 id="pick-h">Choose an SBC</h2>
+  <div class="tiles" id="tiles"></div>
+</section>
+
+<section aria-labelledby="sbcName">
+  <div class="head"><h2 id="sbcName"></h2></div>
+  <div class="chips" id="chips"></div>
+  <p class="note" id="presetNote"></p>
+
   <div class="grid">
     <div class="panel">
+      <div class="field" id="targetField" hidden>
+        <label for="target">Item Score target</label>
+        <input id="target" type="number" min="1" step="1" inputmode="numeric">
+      </div>
       <div class="field">
-        <label for="preset">SBC</label>
-        <select id="preset"></select>
-        <p class="hint" id="presetNote"></p>
+        <label for="done">Score already submitted</label>
+        <input id="done" type="number" min="0" step="1" inputmode="numeric" placeholder="0">
+        <p class="hint">The number your SBC shows as done (your gems). Saved per SBC in this browser.</p>
       </div>
-      <div class="row2">
-        <div class="field">
-          <label for="target">Item Score target</label>
-          <input id="target" type="number" min="1" step="1" inputmode="numeric">
-        </div>
-        <div class="field">
-          <label for="done">Score already submitted</label>
-          <input id="done" type="number" min="0" step="1" inputmode="numeric" placeholder="0">
-        </div>
-      </div>
-      <p class="hint" style="margin-top:-8px;margin-bottom:16px">Use the number your SBC shows as done (your gems). It is saved per SBC in this browser.</p>
-      <div class="field">
-        <label for="maxp">Max players (optional)</label>
-        <input id="maxp" type="number" min="1" step="1" inputmode="numeric" placeholder="No limit">
-      </div>
-
-      <label id="fodder-label">Fodder you can buy</label>
-      <div class="tablewrap">
-        <table aria-labelledby="fodder-label">
-          <thead><tr><th>Rating</th><th>Item Score</th><th>Price (coins)</th><th>Coins per 1,000 pts</th><th><span class="sr">Remove</span></th></tr></thead>
-          <tbody id="rows"></tbody>
-        </table>
-      </div>
-      <p class="hint">A row with no price is ignored. The cheapest coins per 1,000 points is shown in green.</p>
-      <div class="btns">
-        <button class="sec" id="addRow" type="button">Add a rating</button>
-        <button class="sec" id="reset" type="button">Reset to latest prices</button>
+      <div class="field" style="margin-bottom:0">
+        <label for="value">What is the reward worth? (coins)</label>
+        <input id="value" type="number" min="0" step="1" inputmode="numeric" placeholder="Pack or player value">
+        <label class="check"><input type="checkbox" id="tax"> I would sell it (EA takes 5%)</label>
       </div>
     </div>
 
     <div class="panel" aria-live="polite">
       <div id="result"></div>
-      <div class="field" style="margin-top:22px">
-        <label for="value">What is the reward worth? (coins)</label>
-        <input id="value" type="number" min="0" step="1" inputmode="numeric" placeholder="Pack or player value">
-        <label class="check"><input type="checkbox" id="tax"> I would sell it (EA takes 5%)</label>
-      </div>
       <div id="verdict"></div>
-      <div class="odds" id="odds"></div>
     </div>
   </div>
-</section>
 
-<section id="fodder" aria-labelledby="fod-h">
-  <h2 id="fod-h">Cheapest cards right now</h2>
-  <p style="max-width:70ch;color:var(--muted)">Most FC 27 SBCs ignore chemistry, nation and league, so buy whichever card at the rating is cheapest. Women's players and unpopular names are often the cheapest.</p>
-  <div class="cols" id="players"></div>
-  <p class="hint" style="margin-top:14px">Prices differ between sites and platforms, and move daily. Check the transfer market before you buy.</p>
-</section>
+  <details id="fodderBox">
+    <summary>Fodder prices <span>edit to match your market</span></summary>
+    <div class="dbody">
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Rating</th><th>Item Score</th><th>Price (coins)</th><th>Coins per 1,000 pts</th><th><span class="sr">Remove</span></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="hint">A row with no price is ignored. Rows over this SBC's rating limit show "Not allowed". Green marks the cheapest points per coin.</p>
+      <div class="btns">
+        <button class="sec" id="addRow" type="button">Add a rating</button>
+        <button class="sec" id="reset" type="button">Reset to latest prices</button>
+      </div>
+    </div>
+  </details>
 
-<section id="loop" aria-labelledby="loop-h">
-  <h2 id="loop-h">Finishing a big SBC with low losses</h2>
-  <ol class="steps">
-    <li>Submit your untradeable and spare club cards first. They cost nothing and count toward your score.</li>
-    <li>Buy only the gap, and buy 84s. An 84 is worth twice the points of an 83 at about the same price.</li>
-    <li>Enter your submitted score above, so the calculator only prices what is left.</li>
-    <li>For hundreds of cards, buy in batches over several days. Prices climb as you clear the cheap listings, so the real cost is higher than the calculator's floor.</li>
-    <li>For pack SBCs, check the odds table to see how many runs it takes to hit an 85+, 86+, 87+ or promo card, and what those runs cost.</li>
-    <li>Stop when the reward value drops below the coins still to spend.</li>
-  </ol>
-</section>
+  <details id="oddsBox" hidden>
+    <summary>Reward odds <span>how many runs for an 85+, 86+, 87+ or promo</span></summary>
+    <div class="dbody odds" id="odds"></div>
+  </details>
 
-<section id="safety" aria-labelledby="safe-h">
-  <h2 id="safe-h">Stay on the right side of EA</h2>
-  <div class="safety">
-    <p style="margin-top:0">EA has no public API for Ultimate Team clubs, and tools that log in as you or automate the Web App can get an account banned or transfer-locked. This site never touches your account. You type your submitted score in yourself.</p>
-    <p style="margin-bottom:0">Avoid sites that offer "auto SBC" or ask for your EA login.</p>
-  </div>
-</section>
+  <details>
+    <summary>Cheapest cards right now</summary>
+    <div class="dbody">
+      <div class="cols" id="players"></div>
+      <p class="hint" style="margin-top:12px">Most FC 27 SBCs ignore chemistry, nation and league, so buy whichever card at the rating is cheapest. Women's players and unpopular names are often the cheapest. Prices move daily.</p>
+    </div>
+  </details>
 
-<section id="sources" aria-labelledby="src-h">
-  <h2 id="src-h">Where the numbers come from</h2>
-  <ul class="src">
-    <li><a href="https://www.futbin.com/27/fodder-prices" target="_blank" rel="noopener">FUTBIN fodder prices</a></li>
-    <li><a href="https://www.futbin.com/27/squad-building-challenges" target="_blank" rel="noopener">FUTBIN SBC list</a></li>
-    <li><a href="https://fcdata.io/cheapest-by-rating/" target="_blank" rel="noopener">fcdata.io cheapest by rating</a></li>
-    <li><a href="https://futflipper.com/cheapest" target="_blank" rel="noopener">futflipper cheapest by rating</a></li>
-    <li><a href="https://timesaver.gg/blog/fc-27-item-score-table-cheapest-fodder-84s" target="_blank" rel="noopener">timesaver.gg Item Score table</a></li>
-    <li><a href="https://futmind.com/articles/18792/fc-27-liga-f-potm-september-sbc-requirements-claudia-pina-player-review-cost" target="_blank" rel="noopener">futmind Liga F POTM guide</a></li>
-    <li><a href="https://futmind.com/articles/18548/gold-re-roll-sbc-guide-best-solutions-and-rewards-in-fc-27" target="_blank" rel="noopener">futmind Gold Re-Roll guide</a></li>
-  </ul>
-  <p class="hint">Item Scores I could verify: 73–74 = 35, 81 = 280, 83 = 410, 84 = 830, 85 = 2,100. Add other ratings with the button above once you know their score. Reward values are community estimates. Prices and SBC dates come from <code>data.json</code>, and every time shown on this page is Pacific Time.</p>
+  <details>
+    <summary>Tips and sources</summary>
+    <div class="dbody">
+      <ul class="src">
+        <li>Use untradeable and spare club cards first. They cost nothing and count toward your score.</li>
+        <li>For hundreds of cards, buy in batches over several days. Prices climb as you clear cheap listings, so the calculator's total is a floor.</li>
+        <li>Check each SBC's rating limit. The Gold Re-Roll accepts cards up to 83 only.</li>
+        <li>Stop when the reward value drops below the coins still to spend.</li>
+      </ul>
+      <p class="hint">Item Scores used: 62–64 = 20, 73–74 = 35, 78 = 140, 81 = 280, 83 = 410, 84 = 830, 85 = 2,100, 86 = 4,100. Reward values and odds are community estimates. Sources:
+        <a href="https://www.futbin.com/27/squad-building-challenges" target="_blank" rel="noopener">FUTBIN</a>,
+        <a href="https://www.fut.gg/sbc/foundations/27-9-gold-re-roll/" target="_blank" rel="noopener">FUT.GG</a>,
+        <a href="https://www.futnext.com/sbc/gold-re-roll/9" target="_blank" rel="noopener">FUTNext</a>,
+        <a href="https://futmind.com/articles/18548/gold-re-roll-sbc-guide-best-solutions-and-rewards-in-fc-27" target="_blank" rel="noopener">futmind</a>,
+        <a href="https://fcdata.io/cheapest-by-rating/" target="_blank" rel="noopener">fcdata.io</a>,
+        <a href="https://futflipper.com/cheapest" target="_blank" rel="noopener">futflipper</a>,
+        <a href="https://timesaver.gg/blog/fc-27-item-score-table-cheapest-fodder-84s" target="_blank" rel="noopener">timesaver.gg</a>.
+        All times are Pacific Time and come from <code>data.json</code>.</p>
+    </div>
+  </details>
 </section>
 </main>
 
 <footer>
-  <div class="wrap">Fan-made tool, not affiliated with EA. Your edits are saved only in this browser.</div>
+  <div class="wrap">Fan-made, not affiliated with EA. This site never logs into your account, so avoid "auto SBC" tools that ask for your EA login. Your edits are saved only in this browser.</div>
 </footer>
 
 <script id="fallback" type="application/json">{
-  "updated": "2026-10-10T06:43:00Z",
+  "updated": "2026-10-10T06:59:48Z",
   "fodder": [
     {
+      "label": "62–64",
+      "lo": 62,
+      "hi": 64,
+      "score": 20,
+      "price": 200
+    },
+    {
       "label": "73–74",
+      "lo": 73,
+      "hi": 74,
       "score": 35,
       "price": 200
     },
     {
-      "label": "81",
-      "score": 280,
+      "label": "78",
+      "lo": 78,
+      "hi": 78,
+      "score": 140,
       "price": null
     },
     {
+      "label": "81",
+      "lo": 81,
+      "hi": 81,
+      "score": 280,
+      "price": 650
+    },
+    {
       "label": "83",
+      "lo": 83,
+      "hi": 83,
       "score": 410,
       "price": 700
     },
     {
       "label": "84",
+      "lo": 84,
+      "hi": 84,
       "score": 830,
       "price": 850
     },
     {
       "label": "85",
+      "lo": 85,
+      "hi": 85,
       "score": 2100,
       "price": 2400
+    },
+    {
+      "label": "86",
+      "lo": 86,
+      "hi": 86,
+      "score": 4100,
+      "price": 4600
     }
   ],
   "sbcs": [
     {
       "id": "reroll",
-      "name": "Gold Re-Roll (2x 78+ pack)",
+      "name": "Gold Re-Roll",
+      "reward": "2x 78+ Gold Players Pack (untradeable)",
       "target": 1250,
-      "value": 3128,
+      "value": 1500,
+      "maxRating": 83,
+      "req": "Players up to 83 OVR only",
       "starts": null,
       "expires": null,
       "repeatable": true,
-      "note": "3,128 is a community estimate of the pack value. One source lists the pack as untradeable.",
+      "note": "Only cards rated 83 or lower can be submitted, so 84s and above are not used here. The 1,500 value is FUTNext's average return. futmind's pack page averages about 3,300 because rare walkouts lift the mean, so most runs lose coins.",
       "pack": {
         "cards": 2,
         "perCard": {
           "86+": 2.47
         },
-        "note": "The pack page on futmind lists 86+ at about 2.5%. It doesn't list 85+, 87+ or promo odds, so enter them if you know them. The site doesn't say if the figure is per card or per pack, so I treated it as per card."
+        "note": "futmind lists 86+ at about 2.5% for this pack. It doesn't list 85+, 87+ or promo odds, so enter them if you know them. The site doesn't say if the figure is per card or per pack, so I treated it as per card."
       }
     },
     {
       "id": "5x80",
       "name": "5x 80+ Upgrade",
+      "reward": "5x 80+ Gold Players Pack (untradeable)",
       "target": 6750,
-      "value": null,
+      "value": 4290,
+      "maxRating": null,
+      "req": "Any rating (OVR min 45)",
       "starts": null,
       "expires": "2026-10-13T18:00:00Z",
       "repeatable": true,
-      "note": "Reward is an untradeable 5x 80+ pack. The 18:00 UTC end time is assumed, so confirm it in-game.",
+      "note": "The 4,290 value is FUTNext's average return. futmind estimates 9,110, which is pulled up by rare walkouts. The 18:00 UTC end time is assumed, so confirm it in-game.",
       "pack": {
         "cards": 5,
         "perCard": {
@@ -278,22 +322,54 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     {
       "id": "hero86",
       "name": "Max 86 Base Hero Upgrade",
+      "reward": "One random Base Hero, max 86 (untradeable)",
       "target": 85000,
       "value": null,
+      "maxRating": null,
+      "req": "No rating cap in the published solutions",
       "starts": "2026-10-07T18:00:00Z",
       "expires": "2026-10-14T18:00:00Z",
       "repeatable": false,
-      "note": "One random untradeable Hero. Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
+      "note": "Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
+    },
+    {
+      "id": "batista",
+      "name": "Weslley Pinto Batista",
+      "reward": "84 Squad Foundations Weslley Pinto Batista",
+      "target": 11800,
+      "value": null,
+      "maxRating": null,
+      "req": "Not checked, confirm in-game",
+      "starts": null,
+      "expires": "2026-10-15T18:00:00Z",
+      "repeatable": false,
+      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '5 days' countdown, so confirm it in-game."
+    },
+    {
+      "id": "espi",
+      "name": "Carlos Espí",
+      "reward": "85 Future Stars Carlos Espí",
+      "target": 41000,
+      "value": null,
+      "maxRating": null,
+      "req": "Not checked, confirm in-game",
+      "starts": null,
+      "expires": "2026-10-16T18:00:00Z",
+      "repeatable": false,
+      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '6 days' countdown, so confirm it in-game."
     },
     {
       "id": "pina",
-      "name": "Liga F POTM September – Claudia Pina",
+      "name": "Liga F POTM September",
+      "reward": "Claudia Pina 89 (untradeable)",
       "target": 1125000,
       "value": null,
+      "maxRating": null,
+      "req": "Any rating (OVR min 45)",
       "starts": "2026-10-06T18:00:00Z",
       "expires": "2026-11-03T18:00:00Z",
       "repeatable": false,
-      "note": "Reward is the untradeable 89 Pina. Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
+      "note": "Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
     }
   ],
   "players": {
@@ -391,7 +467,7 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
 }</script>
 <script>
 (function(){
-  var KEY = 'fc27sbc.v2', TZ = 'America/Los_Angeles';
+  var KEY = 'fc27sbc.v3', TZ = 'America/Los_Angeles';
   var fallback = JSON.parse(document.getElementById('fallback').textContent);
   var DATA = null, state = {};
   var $ = function(id){return document.getElementById(id);};
@@ -423,6 +499,23 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     });
   }
   function sbcById(id){ return DATA.sbcs.filter(function(s){return s.id===id;})[0] || null; }
+  function curSbc(){ return sbcById(state.preset); }
+  function curTarget(){ var s = curSbc(); return s ? s.target : (Number(state.customTarget)||0); }
+
+  /* ---------- rating limits ---------- */
+  function rangeOf(r){
+    if(r.hi!=null && r.lo!=null) return [r.lo, r.hi];
+    var m = String(r.label).match(/\d+/g);
+    if(!m) return null;
+    var n = m.map(Number); return [Math.min.apply(null,n), Math.max.apply(null,n)];
+  }
+  function allowed(r){
+    var s = curSbc(), rr = rangeOf(r);
+    if(!s || !rr) return true;
+    if(s.maxRating && rr[1] > s.maxRating) return false;
+    if(s.minRating && rr[0] < s.minRating) return false;
+    return true;
+  }
 
   /* ---------- solver ---------- */
   function gcd(a,b){ while(b){ var t=b; b=a%b; a=t; } return a; }
@@ -446,6 +539,49 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     while(s2>0){ var k2 = par[s2]; counts[k2]++; s2 -= items[k2].score/unit; }
     return {cost:bc, score:bs*unit, counts:counts};
   }
+  function usable(){
+    var items = [], idx = [];
+    state.rows.forEach(function(r,i){
+      if(r.score>0 && r.price>0 && allowed(r)){ items.push({score:Math.round(r.score), price:r.price}); idx.push(i); }
+    });
+    return {items:items, idx:idx};
+  }
+
+  /* ---------- SBC tiles and header ---------- */
+  function endsText(s){ return s.expires ? left(Date.parse(s.expires)-Date.now()) : 'No limit'; }
+  function renderTiles(){
+    var box = $('tiles'); box.innerHTML = '';
+    var list = activeSbcs();
+    list.sort(function(a,b){ return (a.expires?1:0) - (b.expires?1:0); });
+    list.forEach(function(s){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'tile';
+      b.setAttribute('aria-pressed', String(state.preset===s.id));
+      b.innerHTML = (s.maxRating?'<span class="badge">Max '+s.maxRating+' OVR</span>':'')+
+        '<span class="tn">'+esc(s.name)+'</span><span class="tr">'+esc(s.reward||'')+'</span>'+
+        '<span class="tf"><span>Ends<b>'+esc(endsText(s))+'</b></span><span>Repeatable<b>'+(s.repeatable?'Yes':'No')+'</b></span><span>Item Score<b>'+fmt(s.target)+'</b></span></span>';
+      b.addEventListener('click', function(){ select(s.id); });
+      box.appendChild(b);
+    });
+    var c = document.createElement('button');
+    c.type = 'button'; c.className = 'tile custom';
+    c.setAttribute('aria-pressed', String(state.preset==='custom'));
+    c.innerHTML = '<span class="tn">Custom target</span><span class="tr">Type any Item Score target for an SBC that is not listed.</span>';
+    c.addEventListener('click', function(){ select('custom'); });
+    box.appendChild(c);
+  }
+  function renderHead(){
+    var s = curSbc(), t = curTarget();
+    $('sbcName').textContent = s ? s.name : 'Custom target';
+    var ch = '<span class="chip">Target <b>'+fmt(t)+'</b></span>';
+    if(s){
+      ch += s.maxRating ? '<span class="chip limit"><b>Max '+s.maxRating+' OVR</b> only</span>' : '<span class="chip">'+esc(s.req||'')+'</span>';
+      ch += s.expires ? '<span class="chip">Ends <b>'+esc(ptFmt.format(new Date(s.expires)))+'</b> ('+left(Date.parse(s.expires)-Date.now())+' left)</span>' : '<span class="chip">No end date</span>';
+      ch += '<span class="chip">'+(s.repeatable?'Repeatable':'Not repeatable')+'</span>';
+    }
+    $('chips').innerHTML = ch;
+    $('presetNote').textContent = s ? (s.note||'') : 'Rating limits are not applied to a custom target.';
+  }
 
   /* ---------- fodder table ---------- */
   function buildRows(){
@@ -459,7 +595,7 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
         '<td class="cp"></td>'+
         '<td><button class="rm" type="button" aria-label="Remove this rating">×</button></td>';
       var ins = tr.querySelectorAll('input');
-      ins[0].addEventListener('input', function(){ r.label = ins[0].value; update(); });
+      ins[0].addEventListener('input', function(){ r.label = ins[0].value; delete r.lo; delete r.hi; update(); });
       ins[1].addEventListener('input', function(){ r.score = ins[1].value===''?null:Number(ins[1].value); update(); });
       ins[2].addEventListener('input', function(){ r.price = ins[2].value===''?null:Number(ins[2].value); update(); });
       tr.querySelector('.rm').addEventListener('click', function(){ state.rows.splice(i,1); buildRows(); update(); });
@@ -467,25 +603,24 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     });
   }
 
-
   /* ---------- odds ---------- */
   var ORDER = [['85+','85+ card'],['86+','86+ card'],['87+','87+ card'],['promo','Promo card']];
   var lastCostRun = null;
-  function showOdds(){ var s = sbcById(state.preset); return state.preset==='custom' || !!(s && s.repeatable); }
+  function showOdds(){ var s = curSbc(); return state.preset==='custom' || !!(s && s.repeatable); }
   function getOdds(){
     state.odds = state.odds || {};
     if(!state.odds[state.preset]){
-      var s = sbcById(state.preset), pk = s && s.pack;
+      var s = curSbc(), pk = s && s.pack;
       state.odds[state.preset] = pk ? {cards:pk.cards, p:clone(pk.perCard||{}), note:pk.note||''} : {cards:'', p:{}, note:''};
     }
     return state.odds[state.preset];
   }
   function buildOdds(){
-    var box = $('odds');
-    if(!showOdds()){ box.innerHTML=''; return; }
+    var box = $('odds'), wrap = $('oddsBox');
+    if(!showOdds()){ wrap.hidden = true; box.innerHTML=''; return; }
+    wrap.hidden = false;
     var o = getOdds();
-    var h = '<h3>Odds from one run</h3>'+
-      '<div class="field"><label for="cards">Cards in the reward pack</label><input id="cards" type="number" min="1" step="1" value="'+(o.cards||'')+'" style="max-width:140px"></div>'+
+    var h = '<div class="field"><label for="cards">Cards in the reward pack</label><input id="cards" type="number" min="1" step="1" value="'+(o.cards||'')+'" style="max-width:140px"></div>'+
       '<div class="tablewrap"><table><thead><tr><th>Pull</th><th>Chance per card (%)</th><th>Chance per run</th><th>Average runs</th><th>Runs for 90%</th><th>Coins for 90%</th></tr></thead><tbody>';
     ORDER.forEach(function(r){
       var v = o.p[r[0]];
@@ -509,13 +644,11 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
       if(!(q>0) || !(cards>0)){ set('p','–'); set('avg','–'); set('n90','–'); set('c90','–'); return; }
       var p = 1 - Math.pow(1-Math.min(q,1), cards);
       var n90 = p>=1 ? 1 : Math.ceil(Math.log(0.1)/Math.log(1-p));
-      set('p', (p*100).toFixed(1)+'%');
-      set('avg', (1/p).toFixed(1));
-      set('n90', fmt(n90));
+      set('p', (p*100).toFixed(1)+'%'); set('avg', (1/p).toFixed(1)); set('n90', fmt(n90));
       set('c90', lastCostRun==null ? '–' : fmt(n90*lastCostRun));
     });
     var run = $('oddsRun');
-    if(run) run.textContent = lastCostRun==null ? 'Add fodder prices to see the cost of a run.' : 'One run costs about '+fmt(lastCostRun)+' coins at the prices above, before any untradeable fodder you already own.';
+    if(run) run.textContent = lastCostRun==null ? 'Add fodder prices to see the cost of a run.' : 'One run costs about '+fmt(lastCostRun)+' coins at the prices in "Fodder prices", before any untradeable fodder you already own.';
   }
 
   /* ---------- main render ---------- */
@@ -523,18 +656,18 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     save();
     var trs = $('rows').children, best = Infinity, cps = [];
     state.rows.forEach(function(r){
-      var cp = (r.score>0 && r.price>0) ? r.price/r.score*1000 : null;
+      var cp = (r.score>0 && r.price>0 && allowed(r)) ? r.price/r.score*1000 : null;
       cps.push(cp); if(cp!==null && cp<best) best = cp;
     });
     state.rows.forEach(function(r,i){
-      var td = trs[i].querySelector('.cp');
-      td.textContent = cps[i]===null ? '–' : fmt(cps[i]);
+      var td = trs[i].querySelector('.cp'), ok = allowed(r);
+      trs[i].classList.toggle('off', !ok);
+      td.textContent = !ok ? 'Not allowed' : (cps[i]===null ? '–' : fmt(cps[i]));
       td.classList.toggle('best', cps[i]!==null && cps[i]===best);
     });
 
-    var out = $('result'), items = [], idx = [];
-    state.rows.forEach(function(r,i){ if(r.score>0 && r.price>0){ items.push({score:Math.round(r.score), price:r.price}); idx.push(i);} });
-    var target = Number(state.target) || 0;
+    var out = $('result'), u = usable(), items = u.items, idx = u.idx;
+    var target = curTarget();
     lastCostRun = null;
     if(showOdds() && items.length && target>0 && target<=500000){ lastCostRun = solve(items, target).cost; }
     updateOdds();
@@ -552,7 +685,7 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     }
     if(remaining<=0){ out.innerHTML = prog+'<p><strong>This SBC is already complete.</strong> Nothing left to buy.</p>'; return; }
     if(remaining>2500000){ out.innerHTML = prog+'<p class="warn">That is too many points to solve here. Use a target of 2,500,000 or less.</p>'; return; }
-    if(!items.length){ out.innerHTML = prog+'<p class="warn">Add a score and price to at least one rating.</p>'; return; }
+    if(!items.length){ out.innerHTML = prog+'<p class="warn">No allowed fodder has a price. Add a price to a rating that fits this SBC’s limit.</p>'; return; }
 
     var res = solve(items, remaining), n = res.counts.reduce(function(a,b){return a+b;},0);
     var h = prog + '<p style="margin:0;color:var(--muted)">Cheapest mix for the remaining '+fmt(remaining)+' points</p>'+
@@ -570,8 +703,6 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
       if(c>0){ var r = state.rows[idx[k]]; h += '<tr><td>'+esc(r.label)+'</td><td>'+fmt(c)+'</td><td>'+fmt(r.price)+'</td><td>'+fmt(c*r.price)+'</td></tr>'; }
     });
     h += '</tbody></table>';
-    var mp = Number(state.maxp);
-    if(mp>0 && n>mp){ h += '<p class="warn">This mix needs '+fmt(n)+' players, over your limit of '+fmt(mp)+'. Clear the price on the lowest-score ratings to force higher-rated cards.</p>'; }
     if(n>40){ h += '<p class="hint">This many cards will push prices up as you buy. Treat the total as a floor, and buy in batches over several days.</p>'; }
     out.innerHTML = h;
 
@@ -585,42 +716,18 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     }
   }
 
-  /* ---------- SBC list, notes, header ---------- */
-  function presetNote(){
-    var s = sbcById(state.preset);
-    if(!s){ return 'Type any Item Score target.'; }
-    var bits = [s.note || ''];
-    if(s.expires){
-      var d = new Date(s.expires);
-      bits.push('Ends '+ptFmt.format(d)+' ('+left(d.getTime()-Date.now())+' left).');
-    } else { bits.push('No end date.'); }
-    bits.push(s.repeatable ? 'Repeatable.' : 'Not repeatable.');
-    return bits.join(' ').replace(/\s+/g,' ').trim();
-  }
-  function buildSelect(){
-    var sel = $('preset'); sel.innerHTML='';
-    activeSbcs().forEach(function(s){ var o=document.createElement('option'); o.value=s.id; o.textContent=s.name; sel.appendChild(o); });
-    var c = document.createElement('option'); c.value='custom'; c.textContent='Custom target'; sel.appendChild(c);
-    if(state.preset!=='custom' && !activeSbcs().some(function(s){return s.id===state.preset;})){
-      state.preset = 'custom';
-    }
-    sel.value = state.preset;
-  }
   function syncInputs(){
-    $('presetNote').textContent = presetNote();
-    $('target').value = state.target==null?'':state.target;
+    var custom = state.preset==='custom';
+    $('targetField').hidden = !custom;
+    $('target').value = custom && state.customTarget ? state.customTarget : '';
     var d = state.progress[state.preset]; $('done').value = d>0?d:'';
     var v = state.vals[state.preset]; $('value').value = v>0?v:'';
-    buildOdds();
   }
-  function chooseSbc(id){
+  function select(id){
     state.preset = id;
     var s = sbcById(id);
-    if(s){
-      state.target = s.target;
-      if(state.vals[id]===undefined) state.vals[id] = s.value;
-    }
-    syncInputs();
+    if(s && state.vals[id]===undefined) state.vals[id] = s.value;
+    renderTiles(); renderHead(); syncInputs(); buildOdds(); update();
   }
   function renderStamp(usedFallback){
     var el = $('stamp'), t = Date.parse(DATA.updated), age = Date.now()-t;
@@ -648,37 +755,26 @@ footer{padding:28px 0 56px;color:var(--muted);font-size:14px}
     DATA = data;
     state = load();
     state.progress = state.progress || {}; state.vals = state.vals || {};
-    if(state.stamp !== data.updated || !state.rows){ state.rows = clone(data.fodder); state.stamp = data.updated; state.odds = {}; }
+    if(state.stamp !== data.updated || !state.rows){ state.rows = clone(data.fodder); state.stamp = data.updated; state.odds = {}; state.vals = {}; }
     if(state.tax===undefined) state.tax = true;
     var sb = activeSbcs();
-    if(!state.preset) state.preset = sb.length ? sb[0].id : 'custom';
-    var firstLoad = state.target==null;
-    buildSelect();
-    if(firstLoad) chooseSbc(state.preset);
+    var valid = state.preset==='custom' || sb.some(function(s){return s.id===state.preset;});
+    if(!valid) state.preset = sb.length ? sb[0].id : 'custom';
     $('tax').checked = !!state.tax;
-    $('maxp').value = state.maxp || '';
-    syncInputs();
     renderStamp(usedFallback);
     renderPlayers();
     buildRows();
-    update();
+    select(state.preset);
     setInterval(function(){
-      var before = state.preset;
-      buildSelect();
-      if(before!==state.preset){ syncInputs(); update(); }
-      $('presetNote').textContent = presetNote();
+      var ids = activeSbcs().map(function(s){return s.id;});
+      if(state.preset!=='custom' && ids.indexOf(state.preset)<0){ select(ids[0] || 'custom'); }
+      else { renderTiles(); renderHead(); }
       renderStamp(usedFallback);
     }, 60000);
   }
 
-  $('preset').addEventListener('change', function(){ chooseSbc(this.value); update(); });
-  $('target').addEventListener('input', function(){
-    state.target = this.value===''?null:Number(this.value);
-    if(state.preset!=='custom'){ state.preset='custom'; $('preset').value='custom'; buildOdds(); }
-    $('presetNote').textContent = presetNote(); update();
-  });
+  $('target').addEventListener('input', function(){ state.customTarget = this.value===''?null:Number(this.value); renderHead(); update(); });
   $('done').addEventListener('input', function(){ state.progress[state.preset] = this.value===''?0:Number(this.value); update(); });
-  $('maxp').addEventListener('input', function(){ state.maxp = this.value; update(); });
   $('value').addEventListener('input', function(){ state.vals[state.preset] = this.value===''?null:Number(this.value); update(); });
   $('tax').addEventListener('change', function(){ state.tax = this.checked; update(); });
   $('addRow').addEventListener('click', function(){ state.rows.push({label:'New', score:null, price:null}); buildRows(); update(); });

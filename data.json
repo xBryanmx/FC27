@@ -1,59 +1,96 @@
 {
-  "updated": "2026-10-10T06:43:00Z",
+  "updated": "2026-10-10T06:59:48Z",
   "fodder": [
     {
+      "label": "62–64",
+      "lo": 62,
+      "hi": 64,
+      "score": 20,
+      "price": 200
+    },
+    {
       "label": "73–74",
+      "lo": 73,
+      "hi": 74,
       "score": 35,
       "price": 200
     },
     {
-      "label": "81",
-      "score": 280,
+      "label": "78",
+      "lo": 78,
+      "hi": 78,
+      "score": 140,
       "price": null
     },
     {
+      "label": "81",
+      "lo": 81,
+      "hi": 81,
+      "score": 280,
+      "price": 650
+    },
+    {
       "label": "83",
+      "lo": 83,
+      "hi": 83,
       "score": 410,
       "price": 700
     },
     {
       "label": "84",
+      "lo": 84,
+      "hi": 84,
       "score": 830,
       "price": 850
     },
     {
       "label": "85",
+      "lo": 85,
+      "hi": 85,
       "score": 2100,
       "price": 2400
+    },
+    {
+      "label": "86",
+      "lo": 86,
+      "hi": 86,
+      "score": 4100,
+      "price": 4600
     }
   ],
   "sbcs": [
     {
       "id": "reroll",
-      "name": "Gold Re-Roll (2x 78+ pack)",
+      "name": "Gold Re-Roll",
+      "reward": "2x 78+ Gold Players Pack (untradeable)",
       "target": 1250,
-      "value": 3128,
+      "value": 1500,
+      "maxRating": 83,
+      "req": "Players up to 83 OVR only",
       "starts": null,
       "expires": null,
       "repeatable": true,
-      "note": "3,128 is a community estimate of the pack value. One source lists the pack as untradeable.",
+      "note": "Only cards rated 83 or lower can be submitted, so 84s and above are not used here. The 1,500 value is FUTNext's average return. futmind's pack page averages about 3,300 because rare walkouts lift the mean, so most runs lose coins.",
       "pack": {
         "cards": 2,
         "perCard": {
           "86+": 2.47
         },
-        "note": "The pack page on futmind lists 86+ at about 2.5%. It doesn't list 85+, 87+ or promo odds, so enter them if you know them. The site doesn't say if the figure is per card or per pack, so I treated it as per card."
+        "note": "futmind lists 86+ at about 2.5% for this pack. It doesn't list 85+, 87+ or promo odds, so enter them if you know them. The site doesn't say if the figure is per card or per pack, so I treated it as per card."
       }
     },
     {
       "id": "5x80",
       "name": "5x 80+ Upgrade",
+      "reward": "5x 80+ Gold Players Pack (untradeable)",
       "target": 6750,
-      "value": null,
+      "value": 4290,
+      "maxRating": null,
+      "req": "Any rating (OVR min 45)",
       "starts": null,
       "expires": "2026-10-13T18:00:00Z",
       "repeatable": true,
-      "note": "Reward is an untradeable 5x 80+ pack. The 18:00 UTC end time is assumed, so confirm it in-game.",
+      "note": "The 4,290 value is FUTNext's average return. futmind estimates 9,110, which is pulled up by rare walkouts. The 18:00 UTC end time is assumed, so confirm it in-game.",
       "pack": {
         "cards": 5,
         "perCard": {
@@ -68,22 +105,54 @@
     {
       "id": "hero86",
       "name": "Max 86 Base Hero Upgrade",
+      "reward": "One random Base Hero, max 86 (untradeable)",
       "target": 85000,
       "value": null,
+      "maxRating": null,
+      "req": "No rating cap in the published solutions",
       "starts": "2026-10-07T18:00:00Z",
       "expires": "2026-10-14T18:00:00Z",
       "repeatable": false,
-      "note": "One random untradeable Hero. Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
+      "note": "Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
+    },
+    {
+      "id": "batista",
+      "name": "Weslley Pinto Batista",
+      "reward": "84 Squad Foundations Weslley Pinto Batista",
+      "target": 11800,
+      "value": null,
+      "maxRating": null,
+      "req": "Not checked, confirm in-game",
+      "starts": null,
+      "expires": "2026-10-15T18:00:00Z",
+      "repeatable": false,
+      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '5 days' countdown, so confirm it in-game."
+    },
+    {
+      "id": "espi",
+      "name": "Carlos Espí",
+      "reward": "85 Future Stars Carlos Espí",
+      "target": 41000,
+      "value": null,
+      "maxRating": null,
+      "req": "Not checked, confirm in-game",
+      "starts": null,
+      "expires": "2026-10-16T18:00:00Z",
+      "repeatable": false,
+      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '6 days' countdown, so confirm it in-game."
     },
     {
       "id": "pina",
-      "name": "Liga F POTM September – Claudia Pina",
+      "name": "Liga F POTM September",
+      "reward": "Claudia Pina 89 (untradeable)",
       "target": 1125000,
       "value": null,
+      "maxRating": null,
+      "req": "Any rating (OVR min 45)",
       "starts": "2026-10-06T18:00:00Z",
       "expires": "2026-11-03T18:00:00Z",
       "repeatable": false,
-      "note": "Reward is the untradeable 89 Pina. Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
+      "note": "Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
     }
   ],
   "players": {

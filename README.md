@@ -20,13 +20,21 @@ refreshes within about a minute.
 
 - `updated`: ISO UTC time of your edit. Change it when you change prices, so
   visitors' saved fodder prices refresh to the new ones.
-- `fodder`: rating, Item Score and price rows.
-- `sbcs`: each SBC has `target`, `value` (reward worth, or `null`), `starts`,
-  `expires` (UTC, or `null`) and `repeatable`.
+- `fodder`: one row per rating. `label`, `lo` and `hi` (the rating range),
+  `score` (Item Score) and `price`.
+- `sbcs`: one entry per SBC tile. Fields: `id`, `name`, `reward`, `target`,
+  `value` (reward worth, or `null`), `maxRating` (for example `83` for the
+  Gold Re-Roll, or `null`), `req` (text shown when there is no max rating),
+  `starts` and `expires` (UTC, or `null`), `repeatable`, `note`.
 - SBCs appear at `starts` and drop off by themselves at `expires`, so you only
   have to add new ones.
-- `pack` (optional, inside an SBC): `cards` in the reward pack and `perCard` chances in percent for `85+`, `86+`, `87+` and `promo`. These feed the odds table. Visitors can also type their own odds on the page.
+- `pack` (optional, inside an SBC): `cards` in the reward pack and `perCard`
+  chances in percent for `85+`, `86+`, `87+` and `promo`. These feed the odds
+  table. Visitors can also type their own odds on the page.
 - `players`: the cheapest-card lists.
+
+Rows above an SBC's `maxRating` are skipped by the solver and marked
+"Not allowed" in the fodder table.
 
 A scheduled workflow (`.github/workflows/price-reminder.yml`) runs daily at
 18:30 UTC (10:30 AM PST, 11:30 AM PDT, just after EA's usual content drop).

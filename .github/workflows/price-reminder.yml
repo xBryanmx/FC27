@@ -1,0 +1,34 @@
+name: Price reminder
+
+# Runs daily at 18:30 UTC (10:30 AM PST / 11:30 AM PDT), just after EA's usual
+# 18:00 UTC content drop. GitHub cron always uses UTC.
+on:
+  schedule:
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Open an issue if data.json is more than 24 hours old
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          updated=$(jq -r .updated data.json)
+          age=$(( $(date +%s) - $(date -d "$updated" +%s) ))
+          echo "data.json updated $updated ($age seconds ago)"
+          if [ "$age" -gt 86400 ]; then
+            open=$(gh issue list --state open --search "Update FC 27 prices in:title" --json number --jq length)
+            if [ "$open" = "0" ]; then
+              gh issue create \
+                --title "Update FC 27 prices" \
+                --body "data.json was last updated $updated (UTC). Check the new SBCs and fodder prices, edit data.json, and close this issue."
+            fi
+          fi

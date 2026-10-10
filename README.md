@@ -21,17 +21,22 @@ refreshes within about a minute.
 - `updated`: ISO UTC time of your edit. Change it when you change prices, so
   visitors' saved fodder prices refresh to the new ones.
 - `fodder`: one row per rating. `label`, `lo` and `hi` (the rating range),
-  `score` (Item Score) and `price`.
-- `sbcs`: one entry per SBC tile. Fields: `id`, `name`, `reward`, `target`,
-  `value` (reward worth, or `null`), `maxRating` (for example `83` for the
-  Gold Re-Roll, or `null`), `req` (text shown when there is no max rating),
-  `starts` and `expires` (UTC, or `null`), `repeatable`, `note`.
+  `score` (Item Score), `price`, and an optional `tip` shown when there is no
+  player list for that rating.
+- `sbcs`: one entry per SBC tile. Fields: `id`, `type` (`potm`, `player`,
+  `upgrade` or `foundation`, used by the filter buttons), `name`, `reward`,
+  `target`, `value` (reward worth, or `null`), `maxRating` (for example `83`
+  for the Gold Re-Roll, or `null`), `maxPlayers` (or `null`), `req` (text
+  shown when there is no max rating), `starts` and `expires` (UTC, or `null`),
+  `repeatable` (`true`, `false` or `null` if unknown), `note`.
 - SBCs appear at `starts` and drop off by themselves at `expires`, so you only
   have to add new ones.
 - `pack` (optional, inside an SBC): `cards` in the reward pack and `perCard`
   chances in percent for `85+`, `86+`, `87+` and `promo`. These feed the odds
   table. Visitors can also type their own odds on the page.
-- `players`: the cheapest-card lists.
+- `players`: the cheapest cards for each rating, as `["Name", price]` pairs.
+  They feed both the "Where to buy" lists and the "Cheapest cards by rating"
+  section.
 
 Rows above an SBC's `maxRating` are skipped by the solver and marked
 "Not allowed" in the fodder table.

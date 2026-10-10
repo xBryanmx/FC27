@@ -93,6 +93,24 @@ tr.off td.cp{opacity:1;color:var(--loss);font-weight:500}
 .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 button.sec{font:inherit;font-weight:600;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:9px 14px;min-height:44px;cursor:pointer}
 button.sec:hover{border-color:var(--muted)}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.pill{font:inherit;font-size:14px;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:36px}
+.pill[aria-pressed="true"]{background:var(--pitch);border-color:var(--pitch);color:#fff}
+.stat3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px;margin-bottom:16px}
+@media (max-width:600px){.stat3{grid-template-columns:1fr}}
+.stat{background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.stat span{display:block;font-size:13px;color:var(--muted)}
+.stat b{font-family:var(--display);font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat.big b{font-size:44px}
+.stat b small{font-size:.5em;color:var(--muted);font-weight:600;margin-left:4px}
+.pick{display:flex;flex-direction:column;align-items:center;gap:8px;font-size:13px;color:var(--muted);text-align:center;line-height:1.3}
+.pick b{color:var(--ink);font-weight:600}
+.buy{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.buy h3{margin:12px 0 6px}
+.buy ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
+.buy li{font-size:14px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--soft)}
+.buy li span{color:var(--muted)}
 /* accordions */
 details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:12px}
 summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
@@ -126,7 +144,9 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
 
 <section aria-labelledby="pick-h">
   <h2 id="pick-h">Choose an SBC</h2>
+  <div class="pills" id="pills" role="group" aria-label="Filter SBCs"></div>
   <div class="tiles" id="tiles"></div>
+  <p class="hint">Classic squad-rating SBCs (3x 79+ Upgrade, Gold, Silver and Bronze Upgrades, and the Challenges) are not here, because they use squad ratings instead of Item Score.</p>
 </section>
 
 <section aria-labelledby="sbcName">
@@ -181,7 +201,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
   </details>
 
   <details>
-    <summary>Cheapest cards right now</summary>
+    <summary>Cheapest cards by rating <span>console prices</span></summary>
     <div class="dbody">
       <div class="cols" id="players"></div>
       <p class="hint" style="margin-top:12px">Most FC 27 SBCs ignore chemistry, nation and league, so buy whichever card at the rating is cheapest. Women's players and unpopular names are often the cheapest. Prices move daily.</p>
@@ -197,7 +217,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
         <li>Check each SBC's rating limit. The Gold Re-Roll accepts cards up to 83 only.</li>
         <li>Stop when the reward value drops below the coins still to spend.</li>
       </ul>
-      <p class="hint">Item Scores used: 62–64 = 20, 73–74 = 35, 78 = 140, 81 = 280, 83 = 410, 84 = 830, 85 = 2,100, 86 = 4,100. Reward values and odds are community estimates. Sources:
+      <p class="hint">Item Scores used: 62–64 = 20, 73–74 = 35, 78 = 140, 81 = 280, 82 = 340, 83 = 410, 84 = 830, 85 = 2,100, 86 = 4,100. Reward values and odds are community estimates. Sources:
         <a href="https://www.futbin.com/27/squad-building-challenges" target="_blank" rel="noopener">FUTBIN</a>,
         <a href="https://www.fut.gg/sbc/foundations/27-9-gold-re-roll/" target="_blank" rel="noopener">FUT.GG</a>,
         <a href="https://www.futnext.com/sbc/gold-re-roll/9" target="_blank" rel="noopener">FUTNext</a>,
@@ -216,254 +236,585 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
 </footer>
 
 <script id="fallback" type="application/json">{
-  "updated": "2026-10-10T06:59:48Z",
-  "fodder": [
-    {
-      "label": "62–64",
-      "lo": 62,
-      "hi": 64,
-      "score": 20,
-      "price": 200
-    },
-    {
-      "label": "73–74",
-      "lo": 73,
-      "hi": 74,
-      "score": 35,
-      "price": 200
-    },
-    {
-      "label": "78",
-      "lo": 78,
-      "hi": 78,
-      "score": 140,
-      "price": null
-    },
-    {
-      "label": "81",
-      "lo": 81,
-      "hi": 81,
-      "score": 280,
-      "price": 650
-    },
-    {
-      "label": "83",
-      "lo": 83,
-      "hi": 83,
-      "score": 410,
-      "price": 700
-    },
-    {
-      "label": "84",
-      "lo": 84,
-      "hi": 84,
-      "score": 830,
-      "price": 850
-    },
-    {
-      "label": "85",
-      "lo": 85,
-      "hi": 85,
-      "score": 2100,
-      "price": 2400
-    },
-    {
-      "label": "86",
-      "lo": 86,
-      "hi": 86,
-      "score": 4100,
-      "price": 4600
-    }
-  ],
-  "sbcs": [
-    {
-      "id": "reroll",
-      "name": "Gold Re-Roll",
-      "reward": "2x 78+ Gold Players Pack (untradeable)",
-      "target": 1250,
-      "value": 1500,
-      "maxRating": 83,
-      "req": "Players up to 83 OVR only",
-      "starts": null,
-      "expires": null,
-      "repeatable": true,
-      "note": "Only cards rated 83 or lower can be submitted, so 84s and above are not used here. The 1,500 value is FUTNext's average return. futmind's pack page averages about 3,300 because rare walkouts lift the mean, so most runs lose coins.",
-      "pack": {
-        "cards": 2,
-        "perCard": {
-          "86+": 2.47
-        },
-        "note": "futmind lists 86+ at about 2.5% for this pack. It doesn't list 85+, 87+ or promo odds, so enter them if you know them. The site doesn't say if the figure is per card or per pack, so I treated it as per card."
-      }
-    },
-    {
-      "id": "5x80",
-      "name": "5x 80+ Upgrade",
-      "reward": "5x 80+ Gold Players Pack (untradeable)",
-      "target": 6750,
-      "value": 4290,
-      "maxRating": null,
-      "req": "Any rating (OVR min 45)",
-      "starts": null,
-      "expires": "2026-10-13T18:00:00Z",
-      "repeatable": true,
-      "note": "The 4,290 value is FUTNext's average return. futmind estimates 9,110, which is pulled up by rare walkouts. The 18:00 UTC end time is assumed, so confirm it in-game.",
-      "pack": {
-        "cards": 5,
-        "perCard": {
-          "85+": 6.47,
-          "86+": 4.12,
-          "87+": 1.18,
-          "promo": 0.61
-        },
-        "note": "From futmind's pack page: 85 = 2.35%, 86 = 2.94%, 87 = 0.59%, 88 = 0.59%, Destined for Glory = 0.61%. The 85+ to 87+ rows are sums of those. The sample looks small (about 170 cards), so treat it as a rough guide."
-      }
-    },
-    {
-      "id": "hero86",
-      "name": "Max 86 Base Hero Upgrade",
-      "reward": "One random Base Hero, max 86 (untradeable)",
-      "target": 85000,
-      "value": null,
-      "maxRating": null,
-      "req": "No rating cap in the published solutions",
-      "starts": "2026-10-07T18:00:00Z",
-      "expires": "2026-10-14T18:00:00Z",
-      "repeatable": false,
-      "note": "Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
-    },
-    {
-      "id": "batista",
-      "name": "Weslley Pinto Batista",
-      "reward": "84 Squad Foundations Weslley Pinto Batista",
-      "target": 11800,
-      "value": null,
-      "maxRating": null,
-      "req": "Not checked, confirm in-game",
-      "starts": null,
-      "expires": "2026-10-15T18:00:00Z",
-      "repeatable": false,
-      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '5 days' countdown, so confirm it in-game."
-    },
-    {
-      "id": "espi",
-      "name": "Carlos Espí",
-      "reward": "85 Future Stars Carlos Espí",
-      "target": 41000,
-      "value": null,
-      "maxRating": null,
-      "req": "Not checked, confirm in-game",
-      "starts": null,
-      "expires": "2026-10-16T18:00:00Z",
-      "repeatable": false,
-      "note": "Target is from FUTBIN's SBC list. The end time is estimated from its '6 days' countdown, so confirm it in-game."
-    },
-    {
-      "id": "pina",
-      "name": "Liga F POTM September",
-      "reward": "Claudia Pina 89 (untradeable)",
-      "target": 1125000,
-      "value": null,
-      "maxRating": null,
-      "req": "Any rating (OVR min 45)",
-      "starts": "2026-10-06T18:00:00Z",
-      "expires": "2026-11-03T18:00:00Z",
-      "repeatable": false,
-      "note": "Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
-    }
-  ],
-  "players": {
-    "84": [
-      [
-        "Reece James",
-        "~700"
-      ],
-      [
-        "Eberechi Eze",
-        "~850"
-      ],
-      [
-        "Sergej Milinković-Savić",
-        "~850"
-      ],
-      [
-        "Phil Foden",
-        "~950"
-      ],
-      [
-        "Marta",
-        "~950"
-      ],
-      [
-        "Lena Oberdorf",
-        "~950"
-      ],
-      [
-        "Beth Mead",
-        "~950"
-      ]
-    ],
-    "83": [
-      [
-        "Leandro Trossard",
-        "~700"
-      ],
-      [
-        "John McGinn",
-        "~700"
-      ],
-      [
-        "Kingsley Coman",
-        "~700"
-      ],
-      [
-        "Patrik Schick",
-        "~700"
-      ],
-      [
-        "Álex Baena",
-        "~700"
-      ],
-      [
-        "Ollie Watkins",
-        "~700"
-      ],
-      [
-        "Iñigo Martínez",
-        "~750"
-      ]
-    ],
-    "85": [
-      [
-        "Deniz Undav",
-        "~2,300"
-      ],
-      [
-        "Granit Xhaka",
-        "~2,500"
-      ],
-      [
-        "Jordan Pickford",
-        "~2,500"
-      ],
-      [
-        "Hakan Çalhanoğlu",
-        "~2,500"
-      ],
-      [
-        "Youri Tielemans",
-        "~2,500"
-      ],
-      [
-        "Sam Kerr",
-        "~2,500"
-      ],
-      [
-        "Jill Roord",
-        "~2,500"
-      ]
-    ]
+ "updated": "2026-10-10T18:18:46Z",
+ "fodder": [
+  {
+   "label": "62–64",
+   "lo": 62,
+   "hi": 64,
+   "score": 20,
+   "price": 200,
+   "tip": "Any common bronze or silver at 62–64, about 200 each."
+  },
+  {
+   "label": "73–74",
+   "lo": 73,
+   "hi": 74,
+   "score": 35,
+   "price": 200,
+   "tip": "Any common gold at 73–74, about 200 each."
+  },
+  {
+   "label": "78",
+   "lo": 78,
+   "hi": 78,
+   "score": 140,
+   "price": null,
+   "tip": "Add the current price for a common 78."
+  },
+  {
+   "label": "81",
+   "lo": 81,
+   "hi": 81,
+   "score": 280,
+   "price": 650
+  },
+  {
+   "label": "82",
+   "lo": 82,
+   "hi": 82,
+   "score": 340,
+   "price": 700
+  },
+  {
+   "label": "83",
+   "lo": 83,
+   "hi": 83,
+   "score": 410,
+   "price": 700
+  },
+  {
+   "label": "84",
+   "lo": 84,
+   "hi": 84,
+   "score": 830,
+   "price": 850
+  },
+  {
+   "label": "85",
+   "lo": 85,
+   "hi": 85,
+   "score": 2100,
+   "price": 2300
+  },
+  {
+   "label": "86",
+   "lo": 86,
+   "hi": 86,
+   "score": 4100,
+   "price": 4600
   }
+ ],
+ "sbcs": [
+  {
+   "id": "reroll",
+   "type": "upgrade",
+   "name": "Gold Re-Roll",
+   "reward": "2x 78+ Gold Players Pack (untradeable)",
+   "target": 1250,
+   "value": 1500,
+   "maxRating": 83,
+   "maxPlayers": null,
+   "req": "Players up to 83 OVR only",
+   "starts": null,
+   "expires": null,
+   "repeatable": true,
+   "note": "Only cards rated 83 or lower can be submitted, so 84s and above are not used here. The 1,500 value is FUTNext's average return. futmind's pack page averages about 3,100 because rare walkouts lift the mean, so most runs lose coins.",
+   "pack": {
+    "cards": 2,
+    "perCard": {
+     "85+": 4.06,
+     "86+": 2.46,
+     "87+": 1.67,
+     "promo": 0.46
+    },
+    "note": "From futmind's pack page (a few hundred packs): 85 = 1.60%, 86 = 0.79%, 87 = 0.79%, 88 = 0.58%, 89 = 0.14%, 90 = 0.15%, and 0.46% of cards are Team of the Week or Destined for Glory. The rows are sums of those."
+   }
+  },
+  {
+   "id": "bsreroll",
+   "type": "upgrade",
+   "name": "Bronze and Silver Re-Roll",
+   "reward": "75+ Gold Player Pack (untradeable)",
+   "target": 500,
+   "value": null,
+   "maxRating": 74,
+   "maxPlayers": null,
+   "req": "Bronze and silver cards",
+   "starts": null,
+   "expires": null,
+   "repeatable": true,
+   "note": "The name says bronze and silver, so I capped it at 74 OVR. That cap is an assumption, so confirm it in-game."
+  },
+  {
+   "id": "5x80",
+   "type": "upgrade",
+   "name": "5x 80+ Upgrade",
+   "reward": "5x 80+ Gold Players Pack (untradeable)",
+   "target": 6750,
+   "value": 4290,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any rating (OVR min 45)",
+   "starts": null,
+   "expires": "2026-10-13T18:00:00Z",
+   "repeatable": true,
+   "note": "The 4,290 value is FUTNext's average return. futmind's pack page averages about 9,400, pulled up by rare walkouts. The 18:00 UTC end time is assumed, so confirm it in-game.",
+   "pack": {
+    "cards": 5,
+    "perCard": {
+     "85+": 5.76,
+     "86+": 3.9,
+     "87+": 2.2,
+     "promo": 0.68
+    },
+    "note": "From futmind's pack page (only about 24 packs, so rough): 85 = 1.86%, 86 = 1.69%, 87 = 0.85%, 88 = 0.51%, 89 = 0.85%, and 0.68% of cards are Team of the Week or Destined for Glory. The rows are sums of those."
+   }
+  },
+  {
+   "id": "hero86",
+   "type": "upgrade",
+   "name": "Max 86 Base Hero Upgrade",
+   "reward": "One random Base Hero, max 86 (untradeable)",
+   "target": 85000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "No rating cap in the published solutions",
+   "starts": "2026-10-07T18:00:00Z",
+   "expires": "2026-10-14T18:00:00Z",
+   "repeatable": false,
+   "note": "Most pulls are worth less than the cost, so enter the Hero price you are aiming for."
+  },
+  {
+   "id": "tarciane",
+   "type": "player",
+   "name": "Destined for Glory – Tarciane",
+   "reward": "Destined for Glory Tarciane (untradeable)",
+   "target": 18750,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Not checked, confirm in-game",
+   "starts": null,
+   "expires": "2026-10-10T18:00:00Z",
+   "repeatable": false,
+   "note": "Ends soon. The end time is estimated from FUTBIN's '11 hours' countdown, so confirm it in-game."
+  },
+  {
+   "id": "batista",
+   "type": "player",
+   "name": "Weslley Pinto Batista",
+   "reward": "84 Squad Foundations Weslley Pinto Batista",
+   "target": 11800,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Not checked, confirm in-game",
+   "starts": null,
+   "expires": "2026-10-15T18:00:00Z",
+   "repeatable": false,
+   "note": "The end time is estimated from FUTBIN's '5 days' countdown, so confirm it in-game."
+  },
+  {
+   "id": "espi",
+   "type": "player",
+   "name": "Carlos Espí",
+   "reward": "85 Future Stars Carlos Espí",
+   "target": 41000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Not checked, confirm in-game",
+   "starts": null,
+   "expires": "2026-10-16T18:00:00Z",
+   "repeatable": false,
+   "note": "The end time is estimated from FUTBIN's '6 days' countdown, so confirm it in-game."
+  },
+  {
+   "id": "gross",
+   "type": "potm",
+   "name": "Premier League POTM – Pascal Groß",
+   "reward": "84 Pascal Groß POTM (untradeable)",
+   "target": 18750,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any rating (OVR min 45)",
+   "starts": null,
+   "expires": "2026-10-29T18:00:00Z",
+   "repeatable": false,
+   "note": "Non-repeatable. The end date is estimated from FUTBIN's '2 Weeks' countdown and a guide that says late October, so confirm it in-game. Progress saves between sessions, and guides say to expect about 20% above the floor price at real market depth."
+  },
+  {
+   "id": "malen",
+   "type": "potm",
+   "name": "Serie A POTM – Donyell Malen",
+   "reward": "85 Donyell Malen POTM (untradeable)",
+   "target": 90000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any rating (OVR min 45)",
+   "starts": null,
+   "expires": "2026-10-29T18:00:00Z",
+   "repeatable": false,
+   "note": "Non-repeatable. The end date is estimated from FUTBIN's '2 Weeks' countdown and a guide that says late October, so confirm it in-game. Progress saves between sessions, and guides say to expect about 20% above the floor price at real market depth."
+  },
+  {
+   "id": "olise",
+   "type": "potm",
+   "name": "Bundesliga POTM – Michael Olise",
+   "reward": "91 Michael Olise POTM (untradeable)",
+   "target": 700000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any rating (OVR min 45)",
+   "starts": null,
+   "expires": "2026-10-29T18:00:00Z",
+   "repeatable": false,
+   "note": "Non-repeatable. The end date is estimated from FUTBIN's '2 Weeks' countdown and a guide that says late October, so confirm it in-game. Progress saves between sessions, and guides say to expect about 20% above the floor price at real market depth."
+  },
+  {
+   "id": "raphinha",
+   "type": "potm",
+   "name": "La Liga POTM – Raphinha",
+   "reward": "89 Raphinha POTM (untradeable)",
+   "target": 1300000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any rating (OVR min 45)",
+   "starts": null,
+   "expires": "2026-10-29T18:00:00Z",
+   "repeatable": false,
+   "note": "Non-repeatable. The end date is estimated from FUTBIN's '2 Weeks' countdown and a guide that says late October, so confirm it in-game. Progress saves between sessions, and guides say to expect about 20% above the floor price at real market depth. I haven't confirmed whether this SBC has a max-player limit like the Pina one."
+  },
+  {
+   "id": "pina",
+   "type": "potm",
+   "name": "Liga F POTM – Claudia Pina",
+   "reward": "89 Claudia Pina POTM (untradeable)",
+   "target": 1125000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": 1500,
+   "req": "Any rating (OVR min 45)",
+   "starts": "2026-10-06T18:00:00Z",
+   "expires": "2026-11-03T18:00:00Z",
+   "repeatable": false,
+   "note": "Progress saves between sessions. Guides put the real cost at about 1.22M–1.4M coins because prices rise as you buy. Sources give the end as 2–3 November, so confirm it in-game."
+  },
+  {
+   "id": "intro",
+   "type": "foundation",
+   "name": "Intro to Player SBCs",
+   "reward": "Squad Foundations Cristian Espinoza",
+   "target": 4000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Not checked, confirm in-game",
+   "starts": null,
+   "expires": null,
+   "repeatable": null,
+   "note": "Target is from FUTBIN's SBC list. I haven't verified the requirements or whether it repeats."
+  },
+  {
+   "id": "started",
+   "type": "foundation",
+   "name": "Getting Started",
+   "reward": "Coin Boost",
+   "target": 1000,
+   "value": null,
+   "maxRating": null,
+   "maxPlayers": null,
+   "req": "Any players from your club",
+   "starts": null,
+   "expires": null,
+   "repeatable": null,
+   "note": "Target is from FUTBIN's SBC list. I haven't verified whether it repeats."
+  }
+ ],
+ "players": {
+  "81": [
+   [
+    "Estéban Lepaul",
+    650
+   ],
+   [
+    "Ainhoa Marín",
+    650
+   ],
+   [
+    "Dudinha",
+    650
+   ],
+   [
+    "Ivan Perišić",
+    650
+   ],
+   [
+    "Iago Aspas",
+    650
+   ],
+   [
+    "Henrikh Mkhitaryan",
+    650
+   ],
+   [
+    "Koke",
+    650
+   ],
+   [
+    "Son Heung Min",
+    650
+   ],
+   [
+    "Hans Vanaken",
+    650
+   ],
+   [
+    "Remo Freuler",
+    650
+   ],
+   [
+    "Brice Samba",
+    650
+   ]
+  ],
+  "82": [
+   [
+    "Ángel Di María",
+    700
+   ],
+   [
+    "Ante Budimir",
+    700
+   ],
+   [
+    "Marc-André ter Stegen",
+    700
+   ],
+   [
+    "Romelu Lukaku",
+    700
+   ],
+   [
+    "Koen Casteels",
+    700
+   ],
+   [
+    "Stefan de Vrij",
+    700
+   ],
+   [
+    "Danilo Pereira",
+    700
+   ],
+   [
+    "Kalidou Koulibaly",
+    700
+   ],
+   [
+    "John Stones",
+    700
+   ],
+   [
+    "Florian Thauvin",
+    700
+   ],
+   [
+    "Leandro Trossard",
+    700
+   ]
+  ],
+  "83": [
+   [
+    "Isco",
+    700
+   ],
+   [
+    "Konstantinos Fortounis",
+    700
+   ],
+   [
+    "Iñigo Martínez",
+    700
+   ],
+   [
+    "Matthias Ginter",
+    700
+   ],
+   [
+    "John McGinn",
+    700
+   ],
+   [
+    "Rodrigo De Paul",
+    700
+   ],
+   [
+    "Kingsley Coman",
+    700
+   ],
+   [
+    "Stanislav Lobotka",
+    700
+   ],
+   [
+    "Jarrod Bowen",
+    700
+   ],
+   [
+    "Ivan Provedel",
+    700
+   ],
+   [
+    "Maximilian Mittelstädt",
+    700
+   ]
+  ],
+  "84": [
+   [
+    "Damaris Egurrola",
+    700
+   ],
+   [
+    "Ezri Konsa",
+    800
+   ],
+   [
+    "Waldemar Anton",
+    800
+   ],
+   [
+    "Oliver Baumann",
+    850
+   ],
+   [
+    "Aleix García",
+    850
+   ],
+   [
+    "Boubacar Kamara",
+    850
+   ],
+   [
+    "Janina Minge",
+    850
+   ],
+   [
+    "Naomi Girma",
+    850
+   ],
+   [
+    "Yann Sommer",
+    900
+   ],
+   [
+    "Robert Lewandowski",
+    900
+   ],
+   [
+    "Wladimiro Falcone",
+    900
+   ]
+  ],
+  "85": [
+   [
+    "Lorena",
+    1300
+   ],
+   [
+    "Konrad Laimer",
+    2200
+   ],
+   [
+    "Deniz Undav",
+    2200
+   ],
+   [
+    "Jordan Pickford",
+    2300
+   ],
+   [
+    "Youri Tielemans",
+    2300
+   ],
+   [
+    "Caitlin Foord",
+    2300
+   ],
+   [
+    "Marcus Thuram",
+    2300
+   ],
+   [
+    "Delphine Cascarino",
+    2300
+   ],
+   [
+    "Victor Osimhen",
+    2300
+   ],
+   [
+    "Keira Walsh",
+    2300
+   ],
+   [
+    "Grimaldo",
+    2400
+   ]
+  ],
+  "86": [
+   [
+    "Scott McTominay",
+    4500
+   ],
+   [
+    "Cucurella",
+    4500
+   ],
+   [
+    "Alessandro Bastoni",
+    4600
+   ],
+   [
+    "Marie Katoto",
+    4600
+   ],
+   [
+    "Pau Cubarsí",
+    4600
+   ],
+   [
+    "Federico Dimarco",
+    4700
+   ],
+   [
+    "Bruno Guimarães",
+    4700
+   ],
+   [
+    "Lindsey Heaps",
+    4800
+   ],
+   [
+    "Alexander Isak",
+    4800
+   ],
+   [
+    "Katie McCabe",
+    4800
+   ],
+   [
+    "Enzo Fernández",
+    4800
+   ]
+  ]
+ }
 }</script>
 <script>
 (function(){
@@ -540,18 +891,49 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     return {cost:bc, score:bs*unit, counts:counts};
   }
   function usable(){
-    var items = [], idx = [];
+    var items = [];
     state.rows.forEach(function(r,i){
-      if(r.score>0 && r.price>0 && allowed(r)){ items.push({score:Math.round(r.score), price:r.price}); idx.push(i); }
+      if(r.score>0 && r.price>0 && allowed(r)){ items.push({score:Math.round(r.score), price:r.price, i:i}); }
     });
-    return {items:items, idx:idx};
+    return items;
+  }
+  function sum(a){ return a.reduce(function(x,y){return x+y;},0); }
+  /* If a player limit is hit, drop the lowest-score card in use and re-solve. */
+  function solveLimited(items, target, maxP){
+    var list = items.slice(), res = solve(list, target), n = sum(res.counts), guard = 0;
+    while(maxP>0 && n>maxP && list.length>1 && guard++<20){
+      var low = -1;
+      res.counts.forEach(function(c,k){ if(c>0 && (low<0 || list[k].score<list[low].score)) low = k; });
+      if(low<0) break;
+      list.splice(low,1);
+      res = solve(list, target); n = sum(res.counts);
+    }
+    return {res:res, list:list, n:n, over: maxP>0 && n>maxP};
   }
 
   /* ---------- SBC tiles and header ---------- */
   function endsText(s){ return s.expires ? left(Date.parse(s.expires)-Date.now()) : 'No limit'; }
+  var FILTERS = [['all','All'],['soon','Expiring soon'],['potm','POTM'],['player','Players'],['upgrade','Upgrades and re-rolls'],['foundation','Foundations']];
+  function matches(s){
+    var f = state.filter || 'all';
+    if(f==='all') return true;
+    if(f==='soon') return !!s.expires && Date.parse(s.expires)-Date.now() < 48*3600*1000;
+    return s.type===f;
+  }
+  function renderPills(){
+    var box = $('pills'); box.innerHTML = '';
+    FILTERS.forEach(function(f){
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'pill'; b.textContent = f[1];
+      b.setAttribute('aria-pressed', String((state.filter||'all')===f[0]));
+      b.addEventListener('click', function(){ state.filter = f[0]; save(); renderPills(); renderTiles(); });
+      box.appendChild(b);
+    });
+  }
+  function repText(s){ return s.repeatable===true ? 'Yes' : (s.repeatable===false ? 'No' : 'Not sure'); }
   function renderTiles(){
     var box = $('tiles'); box.innerHTML = '';
-    var list = activeSbcs();
+    var list = activeSbcs().filter(matches);
     list.sort(function(a,b){ return (a.expires?1:0) - (b.expires?1:0); });
     list.forEach(function(s){
       var b = document.createElement('button');
@@ -559,7 +941,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
       b.setAttribute('aria-pressed', String(state.preset===s.id));
       b.innerHTML = (s.maxRating?'<span class="badge">Max '+s.maxRating+' OVR</span>':'')+
         '<span class="tn">'+esc(s.name)+'</span><span class="tr">'+esc(s.reward||'')+'</span>'+
-        '<span class="tf"><span>Ends<b>'+esc(endsText(s))+'</b></span><span>Repeatable<b>'+(s.repeatable?'Yes':'No')+'</b></span><span>Item Score<b>'+fmt(s.target)+'</b></span></span>';
+        '<span class="tf"><span>Ends<b>'+esc(endsText(s))+'</b></span><span>Repeatable<b>'+repText(s)+'</b></span><span>Item Score<b>'+fmt(s.target)+'</b></span></span>';
       b.addEventListener('click', function(){ select(s.id); });
       box.appendChild(b);
     });
@@ -577,7 +959,8 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     if(s){
       ch += s.maxRating ? '<span class="chip limit"><b>Max '+s.maxRating+' OVR</b> only</span>' : '<span class="chip">'+esc(s.req||'')+'</span>';
       ch += s.expires ? '<span class="chip">Ends <b>'+esc(ptFmt.format(new Date(s.expires)))+'</b> ('+left(Date.parse(s.expires)-Date.now())+' left)</span>' : '<span class="chip">No end date</span>';
-      ch += '<span class="chip">'+(s.repeatable?'Repeatable':'Not repeatable')+'</span>';
+      if(s.maxPlayers) ch += '<span class="chip">Max players <b>'+fmt(s.maxPlayers)+'</b></span>';
+      ch += '<span class="chip">'+(s.repeatable===true?'Repeatable':(s.repeatable===false?'Not repeatable':'Repeatable: check in-game'))+'</span>';
     }
     $('chips').innerHTML = ch;
     $('presetNote').textContent = s ? (s.note||'') : 'Rating limits are not applied to a custom target.';
@@ -606,7 +989,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
   /* ---------- odds ---------- */
   var ORDER = [['85+','85+ card'],['86+','86+ card'],['87+','87+ card'],['promo','Promo card']];
   var lastCostRun = null;
-  function showOdds(){ var s = curSbc(); return state.preset==='custom' || !!(s && s.repeatable); }
+  function showOdds(){ var s = curSbc(); return state.preset==='custom' || !!(s && s.pack); }
   function getOdds(){
     state.odds = state.odds || {};
     if(!state.odds[state.preset]){
@@ -666,10 +1049,10 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
       td.classList.toggle('best', cps[i]!==null && cps[i]===best);
     });
 
-    var out = $('result'), u = usable(), items = u.items, idx = u.idx;
-    var target = curTarget();
+    var out = $('result'), items = usable();
+    var s = curSbc(), target = curTarget(), maxP = s && s.maxPlayers ? s.maxPlayers : 0;
     lastCostRun = null;
-    if(showOdds() && items.length && target>0 && target<=500000){ lastCostRun = solve(items, target).cost; }
+    if(showOdds() && items.length && target>0 && target<=500000){ lastCostRun = solveLimited(items, target, maxP).res.cost; }
     updateOdds();
     var done = Math.max(0, Number(state.progress[state.preset]) || 0);
     var remaining = target - done;
@@ -687,23 +1070,27 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     if(remaining>2500000){ out.innerHTML = prog+'<p class="warn">That is too many points to solve here. Use a target of 2,500,000 or less.</p>'; return; }
     if(!items.length){ out.innerHTML = prog+'<p class="warn">No allowed fodder has a price. Add a price to a rating that fits this SBC’s limit.</p>'; return; }
 
-    var res = solve(items, remaining), n = res.counts.reduce(function(a,b){return a+b;},0);
-    var h = prog + '<p style="margin:0;color:var(--muted)">Cheapest mix for the remaining '+fmt(remaining)+' points</p>'+
-      '<div class="cost">'+fmt(res.cost)+'<small>coins</small></div>'+
-      '<div class="stats"><span>Score to add <b>'+fmt(res.score)+'</b></span><span>Extra points <b>'+fmt(res.score-remaining)+'</b></span><span>Players <b>'+fmt(n)+'</b></span></div>'+
+    var sl = solveLimited(items, remaining, maxP), res = sl.res, list = sl.list, n = sl.n;
+    var h = prog +
+      '<div class="stat3"><div class="stat big"><span>Total cost</span><b>'+fmt(res.cost)+'<small>coins</small></b></div>'+
+      '<div class="stat"><span>Points achieved</span><b>'+fmt(res.score)+' / '+fmt(remaining)+'</b></div>'+
+      '<div class="stat"><span>Players used</span><b>'+fmt(n)+(maxP?' / '+fmt(maxP):'')+'</b></div></div>'+
       '<div class="hand">';
+    var buy = '';
     res.counts.forEach(function(c,k){
-      if(c>0){
-        var lab = String(state.rows[idx[k]].label);
-        h += '<div class="card'+(lab.length>3?' long':'')+'" role="img" aria-label="'+c+' times rating '+esc(lab)+'">'+esc(lab)+'<span class="qty">×'+fmt(c)+'</span></div>';
-      }
+      if(c<=0) return;
+      var r = state.rows[list[k].i], lab = String(r.label);
+      h += '<div class="pick"><div class="card'+(lab.length>3?' long':'')+'" role="img" aria-label="'+c+' times rating '+esc(lab)+'">'+esc(lab)+'<span class="qty">×'+fmt(c)+'</span></div>'+
+           '<span><b>'+fmt(r.price)+'</b> each<br>'+fmt(c*r.price)+' total<br>'+fmt(r.score)+' pts each</span></div>';
+      var pl = DATA.players && DATA.players[lab];
+      buy += '<h3>'+esc(lab)+'-rated, buy '+fmt(c)+'</h3>';
+      if(pl){ buy += '<ul>'+pl.slice(0,8).map(function(p){ return '<li>'+esc(p[0])+' <span>'+fmt(p[1])+'</span></li>'; }).join('')+'</ul>'; }
+      else { buy += '<p class="hint" style="margin-top:0">'+esc(r.tip || 'Use the cheapest cards at this rating.')+'</p>'; }
     });
-    h += '</div><table class="mix"><thead><tr><th>Rating</th><th>Buy</th><th>Each</th><th>Subtotal</th></tr></thead><tbody>';
-    res.counts.forEach(function(c,k){
-      if(c>0){ var r = state.rows[idx[k]]; h += '<tr><td>'+esc(r.label)+'</td><td>'+fmt(c)+'</td><td>'+fmt(r.price)+'</td><td>'+fmt(c*r.price)+'</td></tr>'; }
-    });
-    h += '</tbody></table>';
+    h += '</div>';
+    if(sl.over){ h += '<p class="warn">This can’t fit in the '+fmt(maxP)+' player limit with the ratings priced here. Add a price for higher-rated cards, or finish it in more than one go.</p>'; }
     if(n>40){ h += '<p class="hint">This many cards will push prices up as you buy. Treat the total as a floor, and buy in batches over several days.</p>'; }
+    if(buy){ h += '<div class="buy"><label style="margin:0">Where to buy</label><p class="hint" style="margin-top:0">Cheapest cards at each rating right now. Any card at that rating counts, so buy duplicates of the cheapest.</p>'+buy+'</div>'; }
     out.innerHTML = h;
 
     var v = Number(state.vals[state.preset]);
@@ -742,11 +1129,10 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     var box = $('players'); box.innerHTML='';
     var pts = {};
     DATA.fodder.forEach(function(r){ pts[String(r.label)] = r.score; });
-    ['84','83','85'].forEach(function(k){
-      if(!DATA.players[k]) return;
+    Object.keys(DATA.players||{}).sort().forEach(function(k){
       var div = document.createElement('div');
-      div.innerHTML = '<h3>'+k+'-rated'+(pts[k]?' ('+fmt(pts[k])+' pts)':'')+'</h3><ul class="names">'+
-        DATA.players[k].map(function(p){ return '<li><span>'+esc(p[0])+'</span><span>'+esc(p[1])+'</span></li>'; }).join('')+'</ul>';
+      div.innerHTML = '<h3>'+esc(k)+'-rated'+(pts[k]?' ('+fmt(pts[k])+' pts)':'')+'</h3><ul class="names">'+
+        DATA.players[k].slice(0,8).map(function(p){ return '<li><span>'+esc(p[0])+'</span><span>'+fmt(p[1])+'</span></li>'; }).join('')+'</ul>';
       box.appendChild(div);
     });
   }
@@ -762,6 +1148,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     if(!valid) state.preset = sb.length ? sb[0].id : 'custom';
     $('tax').checked = !!state.tax;
     renderStamp(usedFallback);
+    renderPills();
     renderPlayers();
     buildRows();
     select(state.preset);

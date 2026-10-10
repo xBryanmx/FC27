@@ -34,9 +34,10 @@ refreshes within about a minute.
 - `pack` (optional, inside an SBC): `cards` in the reward pack and `perCard`
   chances in percent for `85+`, `86+`, `87+` and `promo`. These feed the odds
   table. Visitors can also type their own odds on the page.
-- `players`: the cheapest cards for each rating, as `["Name", price]` pairs.
-  They feed both the "Where to buy" lists and the "Cheapest cards by rating"
-  section.
+- `players`: the cheapest cards for each rating (81–88), as
+  `["Name", price, "POS"]`. They feed the "Cheapest players by rating" panels
+  (6 shown, "Show all" for the rest) and the "Where to buy" lists. `playersNote`
+  is the line about where those prices came from.
 
 Rows above an SBC's `maxRating` are skipped by the solver and marked
 "Not allowed" in the fodder table.

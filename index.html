@@ -111,6 +111,24 @@ button.sec:hover{border-color:var(--muted)}
 .buy ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 8px}
 .buy li{font-size:14px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;background:var(--soft)}
 .buy li span{color:var(--muted)}
+
+.rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:1000px){.rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.rgrid{grid-template-columns:1fr}}
+.rp{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+.rh{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 14px;background:var(--soft);border-bottom:1px solid var(--line);font-size:15px}
+.rh b{font-family:var(--display);font-size:26px;margin-right:4px}
+.showall{font:inherit;font-size:13px;font-weight:600;background:none;border:0;color:var(--focus);cursor:pointer;padding:6px 4px;min-height:36px}
+.rp ul{list-style:none;margin:0;padding:0}
+.rp li{display:flex;justify-content:space-between;gap:8px;padding:7px 14px;border-bottom:1px solid var(--line);font-size:14px}
+.rp li .pn{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rp li i{color:var(--muted);font-style:normal}
+.rp li .pp{white-space:nowrap;font-variant-numeric:tabular-nums}
+.rp li .pp em{font-style:normal;color:var(--muted);margin-left:6px}
+.morelink{display:block;padding:8px 14px;font-size:13px}
+.guide{max-width:75ch;padding-left:22px}
+.guide li{margin-bottom:12px}
+.linkbtn{font:inherit;font-weight:600;background:none;border:0;color:var(--focus);cursor:pointer;padding:4px 0;text-align:left;min-height:36px}
 /* accordions */
 details{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:12px}
 summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
@@ -201,14 +219,6 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
   </details>
 
   <details>
-    <summary>Cheapest cards by rating <span>console prices</span></summary>
-    <div class="dbody">
-      <div class="cols" id="players"></div>
-      <p class="hint" style="margin-top:12px">Most FC 27 SBCs ignore chemistry, nation and league, so buy whichever card at the rating is cheapest. Women's players and unpopular names are often the cheapest. Prices move daily.</p>
-    </div>
-  </details>
-
-  <details>
     <summary>Tips and sources</summary>
     <div class="dbody">
       <ul class="src">
@@ -229,6 +239,31 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     </div>
   </details>
 </section>
+<section id="potm" aria-labelledby="potm-h">
+  <h2 id="potm-h">Getting a POTM cheap</h2>
+  <p class="note">No trick makes a POTM free. The cost is the score target times your price per point, so the steps below are about shrinking that. The table uses the fodder prices you set, plus any score you've already submitted.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>POTM SBC</th><th>Target</th><th>Left to do</th><th>Cost at floor prices</th><th>Plan for (+20%)</th><th>Ends in</th></tr></thead>
+      <tbody id="potmRows"></tbody>
+    </table>
+  </div>
+  <ol class="guide">
+    <li><b>Count what you already own.</b> Every card in your club counts toward the score, including duplicates and untradeables, and high ratings are worth a lot: an 86 is 4,100 points, a 93 is 25,000 and a 98 is 90,000. Check your club for untradeable pulls and unwanted cards before you buy anything.</li>
+    <li><b>Buy only the rating with the lowest coins per 1,000 points.</b> The fodder table marks it in green. Right now 84s and 85s are almost tied at about 1,145 coins per 1,000 points, and 82s and 83s are much worse. Re-check it each day, because prices move.</li>
+    <li><b>Pick the POTM by cost, not by card rating.</b> Targets are set by hand. Olise (91) asks for 700,000 points, while Raphinha (89) asks for 1,300,000. The table above ranks them for you.</li>
+    <li><b>Buy over several days.</b> Progress saves, and prices climb as you clear the cheap listings. The totals here are a floor, and guides suggest planning for about 20% more at real market depth. Spreading purchases gives listings time to refill.</li>
+    <li><b>Search by hand.</b> Filter by exact rating, sort by lowest Buy Now, and take the cheapest. Bidding instead of Buy Now can save a little but is slow. Avoid sniping and auto-buy tools, because they break EA's rules and can get your account banned.</li>
+    <li><b>Don't farm fodder through Re-Rolls.</b> One player's 120 Gold Re-Rolls spent 150,000 points and got back about 111,000 in cards. Only run a Re-Roll if you would use its cards anyway.</li>
+    <li><b>Submit carefully.</b> Pull cards off the transfer list first, because listed cards can't be submitted. Sort the submission screen deliberately and watch the running score, so you don't feed in the wrong cards by accident.</li>
+  </ol>
+</section>
+
+<section id="cheapest" aria-labelledby="ch-h">
+  <h2 id="ch-h">Cheapest players by rating</h2>
+  <p class="note" id="playersNote">Any card at the rating counts toward the score, so buy the cheapest.</p>
+  <div class="rgrid" id="rgrid"></div>
+</section>
 </main>
 
 <footer>
@@ -236,7 +271,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
 </footer>
 
 <script id="fallback" type="application/json">{
- "updated": "2026-10-10T18:18:46Z",
+ "updated": "2026-10-10T18:38:30Z",
  "fodder": [
   {
    "label": "62–64",
@@ -281,21 +316,21 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
    "lo": 83,
    "hi": 83,
    "score": 410,
-   "price": 700
+   "price": 750
   },
   {
    "label": "84",
    "lo": 84,
    "hi": 84,
    "score": 830,
-   "price": 850
+   "price": 950
   },
   {
    "label": "85",
    "lo": 85,
    "hi": 85,
    "score": 2100,
-   "price": 2300
+   "price": 2400
   },
   {
    "label": "86",
@@ -540,281 +575,482 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
  "players": {
   "81": [
    [
-    "Estéban Lepaul",
-    650
-   ],
-   [
     "Ainhoa Marín",
-    650
+    650,
+    "RW"
    ],
    [
     "Dudinha",
-    650
+    650,
+    "LM"
    ],
    [
     "Ivan Perišić",
-    650
+    650,
+    "LW"
    ],
    [
     "Iago Aspas",
-    650
+    650,
+    "RW"
    ],
    [
     "Henrikh Mkhitaryan",
-    650
+    650,
+    "CM"
    ],
    [
     "Koke",
-    650
+    650,
+    "CM"
    ],
    [
     "Son Heung Min",
-    650
+    650,
+    "ST"
    ],
    [
     "Hans Vanaken",
-    650
+    650,
+    "CAM"
+   ],
+   [
+    "Nacho Fernández",
+    650,
+    "CB"
    ],
    [
     "Remo Freuler",
-    650
+    650,
+    "CDM"
    ],
    [
-    "Brice Samba",
-    650
+    "Paredes",
+    650,
+    "CM"
+   ],
+   [
+    "Thomasson",
+    650,
+    "CM"
    ]
   ],
   "82": [
    [
     "Ángel Di María",
-    700
+    700,
+    "RW"
    ],
    [
     "Ante Budimir",
-    700
-   ],
-   [
-    "Marc-André ter Stegen",
-    700
+    700,
+    "ST"
    ],
    [
     "Romelu Lukaku",
-    700
-   ],
-   [
-    "Koen Casteels",
-    700
+    700,
+    "ST"
    ],
    [
     "Stefan de Vrij",
-    700
+    700,
+    "CB"
    ],
    [
     "Danilo Pereira",
-    700
+    700,
+    "CB"
    ],
    [
     "Kalidou Koulibaly",
-    700
+    700,
+    "CB"
    ],
    [
     "John Stones",
-    700
+    700,
+    "CB"
    ],
    [
     "Florian Thauvin",
-    700
+    700,
+    "RW"
    ],
    [
     "Leandro Trossard",
-    700
+    700,
+    "LW"
+   ],
+   [
+    "Carrasco",
+    700,
+    "LW"
+   ],
+   [
+    "Sadio Mané",
+    700,
+    "LM"
+   ],
+   [
+    "Fabinho",
+    700,
+    "CDM"
    ]
   ],
   "83": [
    [
-    "Isco",
-    700
+    "Trincão",
+    700,
+    "CAM"
    ],
    [
-    "Konstantinos Fortounis",
-    700
+    "David de Gea",
+    750,
+    "GK"
    ],
    [
-    "Iñigo Martínez",
-    700
-   ],
-   [
-    "Matthias Ginter",
-    700
-   ],
-   [
-    "John McGinn",
-    700
-   ],
-   [
-    "Rodrigo De Paul",
-    700
-   ],
-   [
-    "Kingsley Coman",
-    700
-   ],
-   [
-    "Stanislav Lobotka",
-    700
-   ],
-   [
-    "Jarrod Bowen",
-    700
-   ],
-   [
-    "Ivan Provedel",
-    700
+    "Mikel Merino",
+    750,
+    "CM"
    ],
    [
     "Maximilian Mittelstädt",
-    700
+    750,
+    "LB"
+   ],
+   [
+    "Akanji",
+    750,
+    "CB"
+   ],
+   [
+    "Sonnett",
+    750,
+    "CB"
+   ],
+   [
+    "David Raum",
+    750,
+    "LB"
+   ],
+   [
+    "Jónsdóttir",
+    750,
+    "ST"
+   ],
+   [
+    "Moultrie",
+    750,
+    "CAM"
+   ],
+   [
+    "Isco",
+    800,
+    "CAM"
+   ],
+   [
+    "Orbán",
+    800,
+    "CB"
+   ],
+   [
+    "Toney",
+    800,
+    "ST"
    ]
   ],
   "84": [
    [
-    "Damaris Egurrola",
-    700
+    "Aleix García",
+    900,
+    "CM"
    ],
    [
-    "Ezri Konsa",
-    800
+    "Cristiano Ronaldo",
+    950,
+    "ST"
    ],
    [
-    "Waldemar Anton",
-    800
+    "Bernardo Silva",
+    950,
+    "CM"
+   ],
+   [
+    "Alexander-Arnold",
+    950,
+    "RB"
+   ],
+   [
+    "Eberechi Eze",
+    950,
+    "CAM"
+   ],
+   [
+    "Reijnders",
+    950,
+    "CM"
+   ],
+   [
+    "Dani Olmo",
+    950,
+    "CAM"
+   ],
+   [
+    "Little",
+    950,
+    "CDM"
+   ],
+   [
+    "Timber",
+    950,
+    "RB"
+   ],
+   [
+    "Viggósdóttir",
+    950,
+    "CB"
+   ],
+   [
+    "Sanchez",
+    950,
+    "LW"
    ],
    [
     "Oliver Baumann",
-    850
-   ],
-   [
-    "Aleix García",
-    850
-   ],
-   [
-    "Boubacar Kamara",
-    850
-   ],
-   [
-    "Janina Minge",
-    850
-   ],
-   [
-    "Naomi Girma",
-    850
-   ],
-   [
-    "Yann Sommer",
-    900
-   ],
-   [
-    "Robert Lewandowski",
-    900
-   ],
-   [
-    "Wladimiro Falcone",
-    900
+    1000,
+    "GK"
    ]
   ],
   "85": [
    [
     "Lorena",
-    1300
+    1300,
+    "GK"
    ],
    [
     "Konrad Laimer",
-    2200
+    2200,
+    "RB"
    ],
    [
     "Deniz Undav",
-    2200
+    2200,
+    "ST"
    ],
    [
     "Jordan Pickford",
-    2300
+    2300,
+    "GK"
    ],
    [
     "Youri Tielemans",
-    2300
+    2300,
+    "CM"
    ],
    [
     "Caitlin Foord",
-    2300
+    2300,
+    "LM"
    ],
    [
     "Marcus Thuram",
-    2300
+    2300,
+    "ST"
    ],
    [
     "Delphine Cascarino",
-    2300
+    2300,
+    "RM"
    ],
    [
     "Victor Osimhen",
-    2300
+    2300,
+    "ST"
    ],
    [
     "Keira Walsh",
-    2300
+    2300,
+    "CDM"
    ],
    [
     "Grimaldo",
-    2400
+    2400,
+    "LM"
    ]
   ],
   "86": [
    [
     "Scott McTominay",
-    4500
+    4500,
+    "CM"
    ],
    [
     "Cucurella",
-    4500
+    4500,
+    "LB"
    ],
    [
     "Alessandro Bastoni",
-    4600
+    4600,
+    "CB"
    ],
    [
     "Marie Katoto",
-    4600
+    4600,
+    "ST"
    ],
    [
     "Pau Cubarsí",
-    4600
+    4600,
+    "CB"
    ],
    [
     "Federico Dimarco",
-    4700
+    4700,
+    "LB"
    ],
    [
     "Bruno Guimarães",
-    4700
+    4700,
+    "CM"
    ],
    [
     "Lindsey Heaps",
-    4800
+    4800,
+    "CM"
    ],
    [
     "Alexander Isak",
-    4800
+    4800,
+    "ST"
    ],
    [
     "Katie McCabe",
-    4800
+    4800,
+    "LB"
    ],
    [
     "Enzo Fernández",
-    4800
+    4800,
+    "CM"
+   ]
+  ],
+  "87": [
+   [
+    "Bukayo Saka",
+    6300,
+    "RW"
+   ],
+   [
+    "Nicolò Barella",
+    6400,
+    "CM"
+   ],
+   [
+    "Lautaro Martínez",
+    6500,
+    "ST"
+   ],
+   [
+    "Ona Batlle",
+    6500,
+    "RB"
+   ],
+   [
+    "Jonathan Tah",
+    6600,
+    "CB"
+   ],
+   [
+    "Jamal Musiala",
+    6700,
+    "CAM"
+   ],
+   [
+    "Irene Paredes",
+    6800,
+    "CB"
+   ],
+   [
+    "Vivianne Miedema",
+    6800,
+    "CAM"
+   ],
+   [
+    "Rúben Dias",
+    6800,
+    "CB"
+   ],
+   [
+    "Nico Schlotterbeck",
+    6800,
+    "CB"
+   ],
+   [
+    "Lauren Hemp",
+    6800,
+    "LM"
+   ]
+  ],
+  "88": [
+   [
+    "Declan Rice",
+    10500,
+    "CDM"
+   ],
+   [
+    "Luis Díaz",
+    11000,
+    "LM"
+   ],
+   [
+    "Yui Hasegawa",
+    11000,
+    "CDM"
+   ],
+   [
+    "Barbra Banda",
+    11000,
+    "ST"
+   ],
+   [
+    "Joshua Kimmich",
+    11250,
+    "CDM"
+   ],
+   [
+    "Mapi León",
+    11500,
+    "CB"
+   ],
+   [
+    "Klara Bühl",
+    11500,
+    "LM"
+   ],
+   [
+    "Jan Oblak",
+    11750,
+    "GK"
+   ],
+   [
+    "Alessia Russo",
+    12000,
+    "ST"
+   ],
+   [
+    "João Neves",
+    14000,
+    "CM"
+   ],
+   [
+    "David Raya",
+    18750,
+    "GK"
    ]
   ]
- }
+ },
+ "playersNote": "Prices for 81–84 are from FUTBIN's cheapest-by-rating page on 10 October. 85–88 are from fcdata.io in early October. Console prices."
 }</script>
 <script>
 (function(){
@@ -860,8 +1096,9 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     if(!m) return null;
     var n = m.map(Number); return [Math.min.apply(null,n), Math.max.apply(null,n)];
   }
-  function allowed(r){
-    var s = curSbc(), rr = rangeOf(r);
+  function allowed(r){ return allowedFor(r, curSbc()); }
+  function allowedFor(r, s){
+    var rr = rangeOf(r);
     if(!s || !rr) return true;
     if(s.maxRating && rr[1] > s.maxRating) return false;
     if(s.minRating && rr[0] < s.minRating) return false;
@@ -1037,6 +1274,7 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
   /* ---------- main render ---------- */
   function update(){
     save();
+    renderPotm();
     var trs = $('rows').children, best = Infinity, cps = [];
     state.rows.forEach(function(r){
       var cp = (r.score>0 && r.price>0 && allowed(r)) ? r.price/r.score*1000 : null;
@@ -1126,14 +1364,51 @@ footer{padding:24px 0 48px;color:var(--muted);font-size:14px}
     el.classList.toggle('stale', stale || !!usedFallback);
   }
   function renderPlayers(){
-    var box = $('players'); box.innerHTML='';
+    var box = $('rgrid'); box.innerHTML = '';
+    $('playersNote').textContent = 'Any card at the rating counts toward the score, so buy the cheapest. ' + (DATA.playersNote || '');
     var pts = {};
     DATA.fodder.forEach(function(r){ pts[String(r.label)] = r.score; });
     Object.keys(DATA.players||{}).sort().forEach(function(k){
-      var div = document.createElement('div');
-      div.innerHTML = '<h3>'+esc(k)+'-rated'+(pts[k]?' ('+fmt(pts[k])+' pts)':'')+'</h3><ul class="names">'+
-        DATA.players[k].slice(0,8).map(function(p){ return '<li><span>'+esc(p[0])+'</span><span>'+fmt(p[1])+'</span></li>'; }).join('')+'</ul>';
-      box.appendChild(div);
+      var list = DATA.players[k], open = false;
+      var panel = document.createElement('div'); panel.className = 'rp';
+      var head = document.createElement('div'); head.className = 'rh';
+      head.innerHTML = '<span><b>'+esc(k)+'</b>Rated Players</span>';
+      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'showall';
+      head.appendChild(btn);
+      var ul = document.createElement('ul');
+      function row(p){
+        return '<li><span class="pn">'+esc(p[0])+(p[2]?' <i>('+esc(p[2])+')</i>':'')+'</span><span class="pp"><b>'+fmt(p[1])+'</b>'+(pts[k]?'<em>'+fmt(pts[k])+' pts</em>':'')+'</span></li>';
+      }
+      function draw(){
+        ul.innerHTML = list.slice(0, open ? list.length : 6).map(row).join('');
+        btn.textContent = open ? 'Show less' : 'Show all';
+        btn.setAttribute('aria-expanded', String(open));
+      }
+      btn.addEventListener('click', function(){ open = !open; draw(); });
+      var more = document.createElement('a');
+      more.className = 'morelink'; more.target = '_blank'; more.rel = 'noopener';
+      more.href = 'https://fcdata.io/players/?ovrMin='+k+'&ovrMax='+k; more.textContent = 'Every '+k+' on fcdata.io';
+      panel.appendChild(head); panel.appendChild(ul); panel.appendChild(more);
+      draw(); box.appendChild(panel);
+    });
+  }
+  function renderPotm(){
+    var tb = $('potmRows'); if(!tb) return; tb.innerHTML = '';
+    var rows = [];
+    activeSbcs().filter(function(s){ return s.type==='potm'; }).forEach(function(s){
+      var done = Math.max(0, Number(state.progress[s.id])||0), rem = s.target - done, items = [];
+      state.rows.forEach(function(r,i){ if(r.score>0 && r.price>0 && allowedFor(r,s)) items.push({score:Math.round(r.score), price:r.price, i:i}); });
+      var cost = null;
+      if(rem>0 && items.length && rem<=2500000){ cost = solveLimited(items, rem, s.maxPlayers||0).res.cost; }
+      rows.push({s:s, rem:Math.max(0,rem), cost:cost});
+    });
+    rows.sort(function(a,b){ return (a.cost==null?Infinity:a.cost) - (b.cost==null?Infinity:b.cost); });
+    rows.forEach(function(r){
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><button class="linkbtn" type="button">'+esc(r.s.name)+'</button></td><td>'+fmt(r.s.target)+'</td><td>'+fmt(r.rem)+'</td>'+
+        '<td>'+(r.cost==null?'–':fmt(r.cost))+'</td><td>'+(r.cost==null?'–':fmt(r.cost*1.2))+'</td><td>'+(r.s.expires?left(Date.parse(r.s.expires)-Date.now()):'–')+'</td>';
+      tr.querySelector('button').addEventListener('click', function(){ select(r.s.id); var h = $('sbcName'); if(h.scrollIntoView) h.scrollIntoView({behavior:'smooth'}); });
+      tb.appendChild(tr);
     });
   }
 

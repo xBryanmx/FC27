@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-10T18:18:46Z",
+ "updated": "2026-10-10T18:38:30Z",
  "fodder": [
   {
    "label": "62–64",
@@ -44,21 +44,21 @@
    "lo": 83,
    "hi": 83,
    "score": 410,
-   "price": 700
+   "price": 750
   },
   {
    "label": "84",
    "lo": 84,
    "hi": 84,
    "score": 830,
-   "price": 850
+   "price": 950
   },
   {
    "label": "85",
    "lo": 85,
    "hi": 85,
    "score": 2100,
-   "price": 2300
+   "price": 2400
   },
   {
    "label": "86",
@@ -303,279 +303,480 @@
  "players": {
   "81": [
    [
-    "Estéban Lepaul",
-    650
-   ],
-   [
     "Ainhoa Marín",
-    650
+    650,
+    "RW"
    ],
    [
     "Dudinha",
-    650
+    650,
+    "LM"
    ],
    [
     "Ivan Perišić",
-    650
+    650,
+    "LW"
    ],
    [
     "Iago Aspas",
-    650
+    650,
+    "RW"
    ],
    [
     "Henrikh Mkhitaryan",
-    650
+    650,
+    "CM"
    ],
    [
     "Koke",
-    650
+    650,
+    "CM"
    ],
    [
     "Son Heung Min",
-    650
+    650,
+    "ST"
    ],
    [
     "Hans Vanaken",
-    650
+    650,
+    "CAM"
+   ],
+   [
+    "Nacho Fernández",
+    650,
+    "CB"
    ],
    [
     "Remo Freuler",
-    650
+    650,
+    "CDM"
    ],
    [
-    "Brice Samba",
-    650
+    "Paredes",
+    650,
+    "CM"
+   ],
+   [
+    "Thomasson",
+    650,
+    "CM"
    ]
   ],
   "82": [
    [
     "Ángel Di María",
-    700
+    700,
+    "RW"
    ],
    [
     "Ante Budimir",
-    700
-   ],
-   [
-    "Marc-André ter Stegen",
-    700
+    700,
+    "ST"
    ],
    [
     "Romelu Lukaku",
-    700
-   ],
-   [
-    "Koen Casteels",
-    700
+    700,
+    "ST"
    ],
    [
     "Stefan de Vrij",
-    700
+    700,
+    "CB"
    ],
    [
     "Danilo Pereira",
-    700
+    700,
+    "CB"
    ],
    [
     "Kalidou Koulibaly",
-    700
+    700,
+    "CB"
    ],
    [
     "John Stones",
-    700
+    700,
+    "CB"
    ],
    [
     "Florian Thauvin",
-    700
+    700,
+    "RW"
    ],
    [
     "Leandro Trossard",
-    700
+    700,
+    "LW"
+   ],
+   [
+    "Carrasco",
+    700,
+    "LW"
+   ],
+   [
+    "Sadio Mané",
+    700,
+    "LM"
+   ],
+   [
+    "Fabinho",
+    700,
+    "CDM"
    ]
   ],
   "83": [
    [
-    "Isco",
-    700
+    "Trincão",
+    700,
+    "CAM"
    ],
    [
-    "Konstantinos Fortounis",
-    700
+    "David de Gea",
+    750,
+    "GK"
    ],
    [
-    "Iñigo Martínez",
-    700
-   ],
-   [
-    "Matthias Ginter",
-    700
-   ],
-   [
-    "John McGinn",
-    700
-   ],
-   [
-    "Rodrigo De Paul",
-    700
-   ],
-   [
-    "Kingsley Coman",
-    700
-   ],
-   [
-    "Stanislav Lobotka",
-    700
-   ],
-   [
-    "Jarrod Bowen",
-    700
-   ],
-   [
-    "Ivan Provedel",
-    700
+    "Mikel Merino",
+    750,
+    "CM"
    ],
    [
     "Maximilian Mittelstädt",
-    700
+    750,
+    "LB"
+   ],
+   [
+    "Akanji",
+    750,
+    "CB"
+   ],
+   [
+    "Sonnett",
+    750,
+    "CB"
+   ],
+   [
+    "David Raum",
+    750,
+    "LB"
+   ],
+   [
+    "Jónsdóttir",
+    750,
+    "ST"
+   ],
+   [
+    "Moultrie",
+    750,
+    "CAM"
+   ],
+   [
+    "Isco",
+    800,
+    "CAM"
+   ],
+   [
+    "Orbán",
+    800,
+    "CB"
+   ],
+   [
+    "Toney",
+    800,
+    "ST"
    ]
   ],
   "84": [
    [
-    "Damaris Egurrola",
-    700
+    "Aleix García",
+    900,
+    "CM"
    ],
    [
-    "Ezri Konsa",
-    800
+    "Cristiano Ronaldo",
+    950,
+    "ST"
    ],
    [
-    "Waldemar Anton",
-    800
+    "Bernardo Silva",
+    950,
+    "CM"
+   ],
+   [
+    "Alexander-Arnold",
+    950,
+    "RB"
+   ],
+   [
+    "Eberechi Eze",
+    950,
+    "CAM"
+   ],
+   [
+    "Reijnders",
+    950,
+    "CM"
+   ],
+   [
+    "Dani Olmo",
+    950,
+    "CAM"
+   ],
+   [
+    "Little",
+    950,
+    "CDM"
+   ],
+   [
+    "Timber",
+    950,
+    "RB"
+   ],
+   [
+    "Viggósdóttir",
+    950,
+    "CB"
+   ],
+   [
+    "Sanchez",
+    950,
+    "LW"
    ],
    [
     "Oliver Baumann",
-    850
-   ],
-   [
-    "Aleix García",
-    850
-   ],
-   [
-    "Boubacar Kamara",
-    850
-   ],
-   [
-    "Janina Minge",
-    850
-   ],
-   [
-    "Naomi Girma",
-    850
-   ],
-   [
-    "Yann Sommer",
-    900
-   ],
-   [
-    "Robert Lewandowski",
-    900
-   ],
-   [
-    "Wladimiro Falcone",
-    900
+    1000,
+    "GK"
    ]
   ],
   "85": [
    [
     "Lorena",
-    1300
+    1300,
+    "GK"
    ],
    [
     "Konrad Laimer",
-    2200
+    2200,
+    "RB"
    ],
    [
     "Deniz Undav",
-    2200
+    2200,
+    "ST"
    ],
    [
     "Jordan Pickford",
-    2300
+    2300,
+    "GK"
    ],
    [
     "Youri Tielemans",
-    2300
+    2300,
+    "CM"
    ],
    [
     "Caitlin Foord",
-    2300
+    2300,
+    "LM"
    ],
    [
     "Marcus Thuram",
-    2300
+    2300,
+    "ST"
    ],
    [
     "Delphine Cascarino",
-    2300
+    2300,
+    "RM"
    ],
    [
     "Victor Osimhen",
-    2300
+    2300,
+    "ST"
    ],
    [
     "Keira Walsh",
-    2300
+    2300,
+    "CDM"
    ],
    [
     "Grimaldo",
-    2400
+    2400,
+    "LM"
    ]
   ],
   "86": [
    [
     "Scott McTominay",
-    4500
+    4500,
+    "CM"
    ],
    [
     "Cucurella",
-    4500
+    4500,
+    "LB"
    ],
    [
     "Alessandro Bastoni",
-    4600
+    4600,
+    "CB"
    ],
    [
     "Marie Katoto",
-    4600
+    4600,
+    "ST"
    ],
    [
     "Pau Cubarsí",
-    4600
+    4600,
+    "CB"
    ],
    [
     "Federico Dimarco",
-    4700
+    4700,
+    "LB"
    ],
    [
     "Bruno Guimarães",
-    4700
+    4700,
+    "CM"
    ],
    [
     "Lindsey Heaps",
-    4800
+    4800,
+    "CM"
    ],
    [
     "Alexander Isak",
-    4800
+    4800,
+    "ST"
    ],
    [
     "Katie McCabe",
-    4800
+    4800,
+    "LB"
    ],
    [
     "Enzo Fernández",
-    4800
+    4800,
+    "CM"
+   ]
+  ],
+  "87": [
+   [
+    "Bukayo Saka",
+    6300,
+    "RW"
+   ],
+   [
+    "Nicolò Barella",
+    6400,
+    "CM"
+   ],
+   [
+    "Lautaro Martínez",
+    6500,
+    "ST"
+   ],
+   [
+    "Ona Batlle",
+    6500,
+    "RB"
+   ],
+   [
+    "Jonathan Tah",
+    6600,
+    "CB"
+   ],
+   [
+    "Jamal Musiala",
+    6700,
+    "CAM"
+   ],
+   [
+    "Irene Paredes",
+    6800,
+    "CB"
+   ],
+   [
+    "Vivianne Miedema",
+    6800,
+    "CAM"
+   ],
+   [
+    "Rúben Dias",
+    6800,
+    "CB"
+   ],
+   [
+    "Nico Schlotterbeck",
+    6800,
+    "CB"
+   ],
+   [
+    "Lauren Hemp",
+    6800,
+    "LM"
+   ]
+  ],
+  "88": [
+   [
+    "Declan Rice",
+    10500,
+    "CDM"
+   ],
+   [
+    "Luis Díaz",
+    11000,
+    "LM"
+   ],
+   [
+    "Yui Hasegawa",
+    11000,
+    "CDM"
+   ],
+   [
+    "Barbra Banda",
+    11000,
+    "ST"
+   ],
+   [
+    "Joshua Kimmich",
+    11250,
+    "CDM"
+   ],
+   [
+    "Mapi León",
+    11500,
+    "CB"
+   ],
+   [
+    "Klara Bühl",
+    11500,
+    "LM"
+   ],
+   [
+    "Jan Oblak",
+    11750,
+    "GK"
+   ],
+   [
+    "Alessia Russo",
+    12000,
+    "ST"
+   ],
+   [
+    "João Neves",
+    14000,
+    "CM"
+   ],
+   [
+    "David Raya",
+    18750,
+    "GK"
    ]
   ]
- }
+ },
+ "playersNote": "Prices for 81–84 are from FUTBIN's cheapest-by-rating page on 10 October. 85–88 are from fcdata.io in early October. Console prices."
 }
